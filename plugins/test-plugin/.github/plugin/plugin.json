@@ -1,6 +1,6 @@
 {
-  "name": "clojure-interactive-programming",
-  "description": "REPL-first Clojure interactive programming agent and skills for use with Calva Backseat Driver.",
+  "name": "test-plugin",
+  "description": "Test plugin for validating marketplace structure.",
   "version": "0.1.0",
   "keywords": [
     "clojure",
