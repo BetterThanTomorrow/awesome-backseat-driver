@@ -20,14 +20,14 @@ To make sense of what the content of this repository offers, you may want to che
 To install the Marketplace and the **clojure** plugin:
 
 1. Install/configure **Awesome Backseat Driver** as a provider of plugins:
-  1. From the VS Code command palette: **Chat: Install Plugin from Source**
-  1. Paste: https://github.com/BetterThanTomorrow/awesome-backseat-driver
-  1. Select **clojure**
+    1. From the VS Code command palette: **Chat: Install Plugin from Source**
+    1. Paste: https://github.com/BetterThanTomorrow/awesome-backseat-driver
+    1. Select **clojure**
      ![Select Awesome Clojure Plugin](assets/howto/plugin-selector.png)
 1. You will also want to installing the **clojure-editor** plugin:
-  1. From the VS Code command palette: **Chat: Plugins**
-  1. Append plugin name in the search box, e.g. **clojure-editor**
-  1. Click **Install**
+    1. From the VS Code command palette: **Chat: Plugins**
+    1. Append plugin name in the search box, e.g. **clojure-editor**
+    1. Click **Install**
 
 The minimal starter-pack, IMO, is the **clojure** plugin, the **clojure** instructions, and the **clojure-editor** subagent. There is some cross-referencing going on between these. Also IMO, you need the **babashka**, **joyride**, and **epupp**, plugins.
 
