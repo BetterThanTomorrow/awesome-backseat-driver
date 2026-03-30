@@ -1,4 +1,4 @@
-# awesome-backseat-driver
+# Awesome  Backseat Driver
 
 Plugin marketplace for Clojure AI context in GitHub Copilot — agents, skills, and workflows for REPL-first interactive programming with [Calva Backseat Driver](https://github.com/BetterThanTomorrow/calva-backseat-driver).
 
@@ -13,7 +13,7 @@ https://github.com/BetterThanTomorrow/awesome-backseat-driver
 Or add to your settings:
 
 ```json
-"chat.plugins.marketplaces": ["BetterThanTomorrow/awesome-backseat-driver"]
+"chat.plugins.marketplaces": ["https://github.com/BetterThanTomorrow/awesome-backseat-driver"]
 ```
 
 ## Plugins
@@ -41,6 +41,7 @@ The **Calva Backseat Driver extension** provides the foundational tooling layer 
 This marketplace (as the Copilot team terms it) provides
 1. More optinonated instructions for the AI to produce high quality Clojure code and use the REPL effectively.
 2. More specific information around this or that Clojure dialect or runtime, or this or that library or framework / tool / etcetera.
+3. More opinionated instructions about the use of subagents, etecetera
 
 ## WIP
 
