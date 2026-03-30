@@ -28,9 +28,15 @@ Or add to your settings:
 
 ## Relationship to Calva Backseat Driver
 
-This marketplace provides the **optional philosophy layer** — agents with Clojure methodology, community-contributed skills for patterns and idioms.
+The **Calva Backseat Driver extension** provides the foundational tooling layer of instructions so that the agent *can* and knows *how* to do REPL evaluation, structural editing, symbol lookup, etcetera. Install it from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=betterthantomorrow.calva-backseat-driver).
 
-The **Calva Backseat Driver extension** provides the foundational tooling layer — REPL evaluation, structural editing, symbol lookup, and other tools. Install it from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=betterthantomorrow.calva-backseat-driver).
+This marketplace (as the Copilot team terms it) provides
+1. More optinonated instructions for the AI to produce high quality Clojure code and use the REPL effectively.
+2. More specific information around this or that Clojure dialect or runtime, or this or that library or framework / tool / etcetera.
+
+## WIP
+
+This repo will mature both in terms of its content and structure. Right now it is very raw and maybe not the easiest to contribute to (and certainly not to maintain).
 
 ## License
 
