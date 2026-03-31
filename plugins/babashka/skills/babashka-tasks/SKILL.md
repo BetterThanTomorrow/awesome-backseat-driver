@@ -7,7 +7,7 @@ description: "Write idiomatic bb.edn tasks: thin wrappers delegating to scripts/
 
 Write idiomatic bb.edn tasks: thin declarative wrappers that delegate to well-structured scripts/*.clj modules.
 
-**Prerequisite**: Always read the `babashka` skill before working on tasks. It covers REPL-driven development, REPL-loadable script patterns, shell vs process, data-oriented design, and namespace reference - all foundational to writing good task modules.
+**Prerequisite**: Always load the `babashka` skill. It covers REPL-driven development, REPL-loadable script patterns, shell vs process, data-oriented design, and namespace reference - all foundational to writing good task modules.
 
 ## When to invoke
 
