@@ -214,6 +214,36 @@ FS REPL Sync resets on every page navigation or reload (by design). After trigge
 
 Before any FS write operation: ask the user whether FS REPL Sync is enabled for the target relay port. If a write fails with "FS REPL Sync is not enabled", ask the user to enable it in Epupp settings — do not attempt workarounds.
 
+## Capture API (`epupp.tools`)
+
+Screenshot capture is available automatically when the REPL is connected (same as `epupp.fs` — no manifest or inject needed):
+
+```clojure
+(require '[epupp.tools :as tools])
+
+;; Capture the visible viewport
+(tools/capture-visible)
+(tools/capture-visible {:format "jpeg" :quality 75})
+
+;; Capture by CSS selector
+(tools/capture-selector "nav")
+
+;; Capture a specific element
+(tools/capture-element (js/document.querySelector ".my-thing"))
+```
+
+All functions are `^:async`, returning `{:success bool :dataUrl string :error string}`. The `:dataUrl` is a base64 data URL suitable for `img` src or download.
+
+**Large elements crash the REPL.** Elements taller/wider than the viewport (like `body` on long pages) will hang the capture and disconnect the REPL. Consider checking dimensions first:
+
+```clojure
+(let [r (.getBoundingClientRect (js/document.querySelector "div"))]
+  {:w (.-width r) :h (.-height r)
+   :viewport [(.-innerWidth js/window) (.-innerHeight js/window)]})
+```
+
+Throws on: nil element, zero-dimension element, element outside viewport, non-existent selector.
+
 ## Async/Await
 
 Scittle supports native async/await:
