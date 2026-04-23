@@ -105,7 +105,15 @@ Rename incoming keys to avoid hiding core functions. Keep free: `count`, `filter
 
 ### Options Maps
 
-Gather optional parameters into maps. Support multiple arities by delegating to the options-map arity.
+Prefer keyword destructuring varargs (`& {:keys [...]}`) over multi-arity for optional parameters. Accepts both keyword args and a single map (Clojure 1.11+):
+
+```clojure
+(defn fetch [url & {:keys [timeout retries] :or {timeout 5000 retries 3}}]
+  ...)
+
+(fetch "https://example.com" :timeout 10000)
+(fetch "https://example.com" {:timeout 10000})
+```
 
 ### Map Access and Preservation
 
