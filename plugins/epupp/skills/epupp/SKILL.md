@@ -221,9 +221,10 @@ Screenshot capture is available automatically when the REPL is connected (same a
 ```clojure
 (require '[epupp.tools :as tools])
 
-;; Capture the visible viewport
+;; Capture the visible viewport (defaults to JPEG quality 75)
 (tools/capture-visible)
-(tools/capture-visible {:format "jpeg" :quality 75})
+(tools/capture-visible :format "png")
+(tools/capture-visible :quality 90)
 
 ;; Capture by CSS selector
 (tools/capture-selector "nav")
@@ -232,17 +233,13 @@ Screenshot capture is available automatically when the REPL is connected (same a
 (tools/capture-element (js/document.querySelector ".my-thing"))
 ```
 
+All functions accept keyword args or a map: `(capture-visible :format "png")` and `(capture-visible {:format "png"})` both work. Options: `:format` (`"jpeg"` or `"png"`, default `"jpeg"`), `:quality` (0-100, default 75).
+
 All functions are `^:async`, returning `{:success bool :dataUrl string :error string}`. The `:dataUrl` is a base64 data URL suitable for `img` src or download.
 
-**Large elements crash the REPL.** Elements taller/wider than the viewport (like `body` on long pages) will hang the capture and disconnect the REPL. Consider checking dimensions first:
+With the default JPEG format, captures are compact enough to return through the REPL safely - including viewport and `body` captures. PNG produces much larger data URLs (~20x) that can crash the nREPL/WebSocket transport. If using PNG, consider `def`-ing the result and checking `(count (:dataUrl result))` before evaluating it.
 
-```clojure
-(let [r (.getBoundingClientRect (js/document.querySelector "div"))]
-  {:w (.-width r) :h (.-height r)
-   :viewport [(.-innerWidth js/window) (.-innerHeight js/window)]})
-```
-
-Throws on: nil element, zero-dimension element, element outside viewport, non-existent selector.
+Throws on: nil element, zero-dimension element, element fully outside viewport, non-existent selector.
 
 ## Async/Await
 
