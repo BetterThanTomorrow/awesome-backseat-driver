@@ -40,12 +40,15 @@ You can of course just copy the content of anything you want on your machine(s) 
 
 ## Plugins
 
+<!-- plugins-table-start -->
 | Plugin | Description |
 |---|---|
-| `clojure` | REPL-first Clojure development — agent and skill for any dialect and runtime |
-| `clojure-editor` | Subagent for editing Clojure files using Backseat Driver structural editing tools |
-| `babashka` | Babashka scripting and bb.edn task skills for idiomatic Babashka development + babashka tasks |
-| `epupp` | Browser tampering and userscript development with Epupp, ClojureScript/Scittle in any browser page you need it. (Which in my case is all the pages!) |
+| `clojure` | REPL-first Clojure development — agent and skill for any dialect and runtime. |
+| `clojure-editor` | Subagent for editing Clojure files using Backseat Driver structural editing tools. |
+| `babashka` | Babashka scripting and bb.edn task skills for idiomatic Babashka development. |
+| `epupp` | Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser). |
+| `joyride` | Joyride scripting for VS Code — ensures Joyride extension skills are loaded before working with Joyride. |
+<!-- plugins-table-end -->
 
 ## Instructions
 

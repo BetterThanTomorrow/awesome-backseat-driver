@@ -9,12 +9,16 @@
   publish {:doc "Validate and push a [publish] marker commit to trigger CI release"
            :task (publish/publish! {:dry-run (some #{"--dry-run"} *command-line-args*)})}
 
-  ci-release {:doc "CI-only: update changelog and version for a release"
+  ci-release {:doc "CI-only: update changelog, version, and README for a release"
               :task (let [version (first *command-line-args*)]
                       (when-not version
                         (println "Usage: bb ci-release <version>")
                         (System/exit 1))
-                      (publish/ci-release! version))}
+                      (publish/ci-release! version)
+                      (publish/update-readme!))}
+
+  update-readme {:doc "Regenerate the plugins table in README.md from marketplace.json"
+                 :task (publish/update-readme!)}
 
   bump-version {:doc "CI-only: bump marketplace version without changelog changes"
                 :task (let [version (first *command-line-args*)]

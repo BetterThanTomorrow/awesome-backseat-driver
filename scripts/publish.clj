@@ -179,3 +179,32 @@
         new-marketplace (update-marketplace-version marketplace-content version)]
     (spit marketplace-path new-marketplace)
     (println (str "Bumped " marketplace-path " to v" version))))
+
+;; ============================================================
+;; README generation
+;; ============================================================
+
+(defn generate-plugins-table
+  "Generates a markdown table of plugins from marketplace.json."
+  []
+  (let [marketplace (json/parse-string (slurp marketplace-path) true)
+        plugins (:plugins marketplace)
+        header "| Plugin | Description |\n|---|---|"
+        rows (mapv (fn [{:keys [name description]}]
+                     (str "| `" name "` | " description " |"))
+                   plugins)]
+    (str header "\n" (string/join "\n" rows))))
+
+(defn update-readme!
+  "Updates the plugins table in README.md between marker comments."
+  []
+  (let [readme (slurp "README.md")
+        table (generate-plugins-table)
+        updated (string/replace readme
+                                #"(?s)<!-- plugins-table-start -->\n.*?\n<!-- plugins-table-end -->"
+                                (str "<!-- plugins-table-start -->\n" table "\n<!-- plugins-table-end -->"))]
+    (if (= readme updated)
+      (println "README.md plugins table: no markers found, skipping.")
+      (do
+        (spit "README.md" updated)
+        (println "README.md plugins table updated.")))))

@@ -10,9 +10,9 @@ This is a VS Code Copilot plugin marketplace repo — pure content (markdown, JS
 
 ## Changelog
 
-Maintain `CHANGELOG.md` using [Keep a Changelog](https://keepachangelog.com/) format. Every user-visible change gets an entry under `## [Unreleased]` before committing.
+Maintain `CHANGELOG.md` using [Keep a Changelog](https://keepachangelog.com/) format. Only plugin-related changes get entries — new plugins, removed plugins, updated skills/agents, and changed instructions. Infrastructure changes (CI, scripts, README generation) do not belong in the changelog.
 
-- New plugins, removed plugins, updated skills/agents, changed instructions — all go in the changelog.
+- Add entries under `## [Unreleased]` before committing.
 - Entries are bullet points. Link issues when relevant.
 - The publish pipeline moves unreleased entries to a versioned section automatically — just keep `## [Unreleased]` tended.
 
