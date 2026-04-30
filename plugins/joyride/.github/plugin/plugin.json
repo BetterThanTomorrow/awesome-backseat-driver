@@ -1,0 +1,12 @@
+{
+  "name" : "joyride",
+  "description" : "Joyride scripting for VS Code — ensures Joyride extension skills are loaded before working with Joyride.",
+  "version" : "0.1.0",
+  "keywords" : [ "joyride", "clojurescript", "vscode", "scripting", "repl" ],
+  "author" : {
+    "name" : "BetterThanTomorrow"
+  },
+  "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
+  "license" : "MIT",
+  "skills" : [ "./skills/joyride" ]
+}
