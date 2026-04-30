@@ -1,0 +1,6 @@
+{:paths ["scripts"]
+ :tasks
+ {:requires ([validate])
+
+  validate {:doc "Validate plugin structure (JSON, paths, marketplace consistency)"
+            :task (validate/validate!)}}}
