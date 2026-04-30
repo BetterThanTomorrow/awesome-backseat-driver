@@ -68,6 +68,28 @@ This marketplace (as the Copilot team terms it) provides
 
 This repo will mature both in terms of its content and structure. Right now it is very raw and maybe not the easiest to contribute to (and certainly not to maintain).
 
+## Development
+
+### Branch model
+
+Development happens on the `next` branch. Releases merge `next` into `master` (fast-forward only).
+
+### Validating plugins
+
+```sh
+bb validate
+```
+
+Checks that all `plugin.json` files are valid JSON with required fields, and that all referenced skill/agent paths exist.
+
+### Publishing a release
+
+```sh
+bb publish
+```
+
+This validates preconditions (on `next`, clean tree, ahead of `master`, changelog has unreleased entries), shows a summary, and on confirmation pushes a `[publish]` marker commit. The CI pipeline then validates plugins, updates the changelog and version, tags, creates a GitHub Release, and merges `next` into `master`.
+
 ## License 🍻🗽
 
 [MIT](LICENSE.txt)
