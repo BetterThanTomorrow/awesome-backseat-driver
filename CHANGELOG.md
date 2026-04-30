@@ -6,6 +6,6 @@ Changes to Awesome Backseat Driver
 
 - Remove joyride plugin (which is now bundled with Joyride itself)
 
-### 2025-03-30-12-00-00
+### v1.0.0
 
 - First release

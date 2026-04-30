@@ -1,0 +1,6 @@
+.DS_Store
+.nrepl-port
+.clj-kondo/cache/
+.lsp/cache/
+.calva/mcp-server/port
+agent-plans/
