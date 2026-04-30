@@ -29,7 +29,7 @@ To install the Marketplace and the **clojure** plugin:
     1. Append plugin name in the search box, e.g. **clojure-editor**
     1. Click **Install**
 
-The minimal starter-pack, IMO, is the **clojure** plugin, the **clojure** instructions, and the **clojure-editor** subagent. There is some cross-referencing going on between these. Also IMO, you need the **babashka**, **joyride**, and **epupp**, plugins.
+The minimal starter-pack, IMO, is the **clojure** plugin, the **clojure** instructions, and the **clojure-editor** subagent. There is some cross-referencing going on between these. Also IMO, you need the **babashka**, and **epupp**, plugins.
 
 > [!NOTE]
 > Plugins contain agents and skills. Both types of content are lazy loaded by the agent, so they will not hurt your agents context window just by being there. They will only add some little description so that the agent knows when to load them.
@@ -45,7 +45,6 @@ You can of course just copy the content of anything you want on your machine(s) 
 | `clojure` | REPL-first Clojure development — agent and skill for any dialect and runtime |
 | `clojure-editor` | Subagent for editing Clojure files using Backseat Driver structural editing tools |
 | `babashka` | Babashka scripting and bb.edn task skills for idiomatic Babashka development + babashka tasks |
-| `joyride` | Joyride skills for VS Code automation with ClojureScript — scripting, user scripts, and workspace automation |
 | `epupp` | Browser tampering and userscript development with Epupp, ClojureScript/Scittle in any browser page you need it. (Which in my case is all the pages!) |
 
 ## Instructions

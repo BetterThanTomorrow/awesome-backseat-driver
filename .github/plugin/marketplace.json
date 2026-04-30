@@ -24,11 +24,6 @@
     "description" : "Babashka scripting and bb.edn task skills for idiomatic Babashka development.",
     "version" : "0.1.0"
   }, {
-    "name" : "joyride",
-    "source" : "joyride",
-    "description" : "Joyride skills for VS Code automation with ClojureScript — scripting, user scripts, and workspace automation.",
-    "version" : "0.1.0"
-  }, {
     "name" : "epupp",
     "source" : "epupp",
     "description" : "Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser).",
