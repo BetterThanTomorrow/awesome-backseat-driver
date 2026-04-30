@@ -1,0 +1,95 @@
+name: Publish
+
+"on":
+  push:
+    branches: [next]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: startsWith(github.event.head_commit.message, '[publish]')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Babashka
+        uses: turtlequeue/setup-babashka@v1.7.0
+        with:
+          babashka-version: 1.12.196
+
+      - name: Validate plugins
+        run: bb validate
+
+      - name: Extract version
+        id: version
+        run: |
+          MSG="${{ github.event.head_commit.message }}"
+          VERSION=$(echo "$MSG" | sed -n 's/\[publish\] v\(.*\)/\1/p')
+          if [ -z "$VERSION" ]; then
+            echo "Could not extract version from commit message: $MSG"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          NEXT_VERSION=$(echo "$VERSION" | awk -F. '{print $1"."$2"."$3+1}')
+          echo "next_version=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Update changelog and version
+        run: bb ci-release ${{ steps.version.outputs.version }}
+
+      - name: Extract release notes
+        id: notes
+        run: |
+          # Extract the just-created release section from CHANGELOG.md
+          VERSION="${{ steps.version.outputs.version }}"
+          # Get content between ## [VERSION] and the next ## heading
+          NOTES=$(sed -n "/^## \[$VERSION\]/,/^## /{/^## \[$VERSION\]/d;/^## /d;p}" CHANGELOG.md)
+          # Use delimiter for multiline output
+          {
+            echo "notes<<EOF"
+            echo "$NOTES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit release
+        run: |
+          git add CHANGELOG.md .github/plugin/marketplace.json
+          git commit -m "Release v${{ steps.version.outputs.version }}"
+
+      - name: Tag
+        run: git tag "v${{ steps.version.outputs.version }}"
+
+      - name: Fast-forward merge into master
+        run: |
+          git checkout master
+          git merge --ff-only next
+          git checkout next
+
+      - name: Push master and tag
+        run: |
+          git push origin master
+          git push origin "v${{ steps.version.outputs.version }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          body: ${{ steps.notes.outputs.notes }}
+
+      - name: Bump to next dev version
+        run: |
+          bb bump-version ${{ steps.version.outputs.next_version }}
+          git add .github/plugin/marketplace.json
+          git commit -m "Bump version to v${{ steps.version.outputs.next_version }}"
+          git push origin next

@@ -171,3 +171,11 @@
     (spit "CHANGELOG.md" new-changelog)
     (spit marketplace-path new-marketplace)
     (println (str "Updated CHANGELOG.md and " marketplace-path " to v" version))))
+
+(defn bump-version!
+  "Called by CI to bump only the marketplace version (no changelog changes)."
+  [version]
+  (let [marketplace-content (slurp marketplace-path)
+        new-marketplace (update-marketplace-version marketplace-content version)]
+    (spit marketplace-path new-marketplace)
+    (println (str "Bumped " marketplace-path " to v" version))))

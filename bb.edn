@@ -14,4 +14,11 @@
                       (when-not version
                         (println "Usage: bb ci-release <version>")
                         (System/exit 1))
-                      (publish/ci-release! version))}}}
+                      (publish/ci-release! version))}
+
+  bump-version {:doc "CI-only: bump marketplace version without changelog changes"
+                :task (let [version (first *command-line-args*)]
+                        (when-not version
+                          (println "Usage: bb bump-version <version>")
+                          (System/exit 1))
+                        (publish/bump-version! version))}}}
