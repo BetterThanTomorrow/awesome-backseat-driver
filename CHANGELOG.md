@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-04-30
+
 - Add joyride plugin (routing skill to load Joyride extension's bundled skills)
 
 ## [1.0.1] - 2026-04-30
