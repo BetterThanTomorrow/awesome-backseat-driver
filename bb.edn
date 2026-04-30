@@ -1,6 +1,17 @@
 {:paths ["scripts"]
  :tasks
- {:requires ([validate])
+ {:requires ([validate]
+             [publish])
 
   validate {:doc "Validate plugin structure (JSON, paths, marketplace consistency)"
-            :task (validate/validate!)}}}
+            :task (validate/validate!)}
+
+  publish {:doc "Validate and push a [publish] marker commit to trigger CI release"
+           :task (publish/publish! {:dry-run (some #{"--dry-run"} *command-line-args*)})}
+
+  ci-release {:doc "CI-only: update changelog and version for a release"
+              :task (let [version (first *command-line-args*)]
+                      (when-not version
+                        (println "Usage: bb ci-release <version>")
+                        (System/exit 1))
+                      (publish/ci-release! version))}}}
