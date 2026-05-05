@@ -47,6 +47,7 @@ You can of course just copy the content of anything you want on your machine(s) 
 | `clojure-editor` | Subagent for editing Clojure files using Backseat Driver structural editing tools. |
 | `babashka` | Babashka scripting and bb.edn task skills for idiomatic Babashka development. |
 | `epupp` | Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser). |
+| `squint` | Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects. |
 | `joyride` | Joyride scripting for VS Code — ensures Joyride extension skills are loaded before working with Joyride. |
 <!-- plugins-table-end -->
 

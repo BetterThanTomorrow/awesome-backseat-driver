@@ -1,49 +1,42 @@
 {
-  "name": "awesome-backseat-driver",
-  "metadata": {
-    "description": "Clojure AI context plugins for GitHub Copilot — agents, skills, and workflows for REPL-first interactive programming with Calva Backseat Driver.",
-    "version": "1.0.6",
-    "pluginRoot": "./plugins"
+  "name" : "awesome-backseat-driver",
+  "metadata" : {
+    "description" : "Clojure AI context plugins for GitHub Copilot — agents, skills, and workflows for REPL-first interactive programming with Calva Backseat Driver.",
+    "version" : "1.0.7",
+    "pluginRoot" : "./plugins"
   },
-  "owner": {
-    "name": "BetterThanTomorrow"
+  "owner" : {
+    "name" : "BetterThanTomorrow"
   },
-  "plugins": [
-    {
-      "name": "clojure",
-      "source": "clojure",
-      "description": "REPL-first Clojure development — agent and skill for any dialect and runtime.",
-      "version": "0.1.0"
-    },
-    {
-      "name": "clojure-editor",
-      "source": "clojure-editor",
-      "description": "Subagent for editing Clojure files using Backseat Driver structural editing tools.",
-      "version": "0.1.0"
-    },
-    {
-      "name": "babashka",
-      "source": "babashka",
-      "description": "Babashka scripting and bb.edn task skills for idiomatic Babashka development.",
-      "version": "0.1.0"
-    },
-    {
-      "name": "epupp",
-      "source": "epupp",
-      "description": "Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser).",
-      "version": "0.1.0"
-    },
-    {
-      "name": "squint",
-      "source": "squint",
-      "description": "Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects.",
-      "version": "0.1.0"
-    },
-    {
-      "name": "joyride",
-      "source": "joyride",
-      "description": "Joyride scripting for VS Code — ensures Joyride extension skills are loaded before working with Joyride.",
-      "version": "0.1.0"
-    }
-  ]
+  "plugins" : [ {
+    "name" : "clojure",
+    "source" : "clojure",
+    "description" : "REPL-first Clojure development — agent and skill for any dialect and runtime.",
+    "version" : "0.1.0"
+  }, {
+    "name" : "clojure-editor",
+    "source" : "clojure-editor",
+    "description" : "Subagent for editing Clojure files using Backseat Driver structural editing tools.",
+    "version" : "0.1.0"
+  }, {
+    "name" : "babashka",
+    "source" : "babashka",
+    "description" : "Babashka scripting and bb.edn task skills for idiomatic Babashka development.",
+    "version" : "0.1.0"
+  }, {
+    "name" : "epupp",
+    "source" : "epupp",
+    "description" : "Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser).",
+    "version" : "0.1.0"
+  }, {
+    "name" : "squint",
+    "source" : "squint",
+    "description" : "Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects.",
+    "version" : "0.1.0"
+  }, {
+    "name" : "joyride",
+    "source" : "joyride",
+    "description" : "Joyride scripting for VS Code — ensures Joyride extension skills are loaded before working with Joyride.",
+    "version" : "0.1.0"
+  } ]
 }

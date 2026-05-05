@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.7] - 2026-05-05
+
 - Add Squint Clojure dialect skill
 
 ## [1.0.5] - 2026-05-05
