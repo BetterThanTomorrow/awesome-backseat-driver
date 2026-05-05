@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.9] - 2026-05-05
+
 - Bump updated plugin versions
 - Add plugin READMEs
 
