@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-05-05
+
 - Add Clojure dialects section to `clojure` skill, plus first stab at dialect references
 
 ## [1.0.3] - 2026-04-30
