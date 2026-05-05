@@ -64,6 +64,7 @@ jobs:
       - name: Commit release
         run: |
           git add CHANGELOG.md .github/plugin/marketplace.json README.md
+          git add plugins/*/README.md plugins/*/.github/plugin/plugin.json
           git commit -m "Release v${{ steps.version.outputs.version }}"
 
       - name: Tag
