@@ -119,7 +119,7 @@
         changelog (slurp "CHANGELOG.md")
         unreleased (parse-unreleased changelog)
         current-version (read-marketplace-version)
-        next-version (bump-patch current-version)
+        release-version current-version
         errors (cond-> []
                  (not= branch "next")
                  (conj (str "Must be on 'next' branch (currently on '" branch "')"))
@@ -137,23 +137,22 @@
         (System/exit 1))
       (do
         (println "Ready to publish:")
-        (println (str "  Current version: " current-version))
-        (println (str "  Release version: " next-version))
+        (println (str "  Release version: " release-version))
         (println (str "  Unreleased entries:"))
         (doseq [entry unreleased]
           (println (str "    " entry)))
         (println)
         (if dry-run
-          (println (str "[dry-run] Would create empty commit '[publish] v" next-version "' and push next"))
+          (println (str "[dry-run] Would create empty commit '[publish] v" release-version "' and push next"))
           (do
             (print "Proceed? [y/N] ")
             (flush)
             (let [answer (string/trim (read-line))]
               (if (= (string/lower-case answer) "y")
                 (do
-                  (p/shell "git" "commit" "--allow-empty" "-m" (str "[publish] v" next-version))
+                  (p/shell "git" "commit" "--allow-empty" "-m" (str "[publish] v" release-version))
                   (p/shell "git" "push" "origin" "next")
-                  (println (str "Pushed [publish] v" next-version " to next.")))
+                  (println (str "Pushed [publish] v" release-version " to next.")))
                 (println "Aborted.")))))))))
 
 ;; ============================================================
