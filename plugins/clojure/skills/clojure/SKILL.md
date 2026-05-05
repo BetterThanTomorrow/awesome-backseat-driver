@@ -194,6 +194,8 @@ Clojure runs on multiple hosts with different semantics. Identify the dialect be
 
 ### Dialect Detection
 
+These are indicators, not rules — use common sense, and verify with the human if uncertain:
+
 | Indicator | Dialect |
 |---|---|
 | `deps.edn` or `project.clj`, JVM classpath | JVM Clojure |
@@ -204,7 +206,9 @@ Clojure runs on multiple hosts with different semantics. Identify the dialect be
 | Scittle `<script>` tags, browser SCI REPL | Scittle (SCI in browser) |
 | `nbb.edn`, `#!/usr/bin/env nbb` | nbb (SCI on Node.js) |
 
-When a project uses multiple dialects (e.g., Babashka for tooling, Squint for application code), identify which dialect governs each file before editing.
+When a project uses multiple dialects (e.g., Babashka for tooling, Squint for application code), identify which dialect governs each file before planning or editing.
+
+Dedicated skills exist for **Squint** and **Babashka** — load them for operational depth. This section provides cross-dialect awareness that is always available.
 
 ### Cross-Dialect Divergence
 
@@ -234,7 +238,8 @@ Load these from `references/` when the task needs operational depth:
 - [repl-workflows.md](references/repl-workflows.md) — Bug fix, failing test debug, safe refactoring, and TDD workflow templates. Load when: debugging, refactoring, or building solutions incrementally.
 - [runtime-patterns.md](references/runtime-patterns.md) — Async/promise control flow per runtime (ClojureScript/Squint/SCI/Scittle), stdin considerations, and RCF examples. Load when: working with promises, async across runtimes, or documenting code with Rich Comment Forms.
 - [sci-dialect.md](references/sci-dialect.md) — REPL-verified SCI feature parity and differences vs Clojure. Covers Babashka, Scittle, Joyride, nbb, and other SCI-based environments. Load when: uncertain whether a Clojure feature works in SCI.
-- [squint-dialect.md](references/squint-dialect.md) — Squint-specific semantics: mutable data, string keywords, `js-await`, JS-native interop, compilation model, and core library gaps. Load when: working with Squint projects or `.cljs` files compiled via `squint.edn`.
+- **Squint skill** — Full Squint development: compilation, REPL workflow, debugging, function availability, and core library gaps. Load when: writing Squint code or working with `squint.edn` projects.
+- [squint-dialect.md](references/squint-dialect.md) — Quick reference of essential Squint semantic differences. Covers the base when the Squint skill is not loaded. Points to the full Squint skill for operational depth.
 
 ## S5 — Invariants
 
