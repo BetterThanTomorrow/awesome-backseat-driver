@@ -1,7 +1,8 @@
 {:paths ["scripts"]
  :tasks
  {:requires ([validate]
-             [publish])
+             [publish]
+             [bump-versions])
 
   validate {:doc "Validate plugin structure (JSON, paths, marketplace consistency)"
             :task (validate/validate!)}
@@ -14,6 +15,8 @@
                       (when-not version
                         (println "Usage: bb ci-release <version>")
                         (System/exit 1))
+                      (bump-versions/bump-versions! {})
+                      (bump-versions/generate-readmes!)
                       (publish/ci-release! version)
                       (publish/update-readme!))}
 
@@ -25,4 +28,11 @@
                         (when-not version
                           (println "Usage: bb bump-version <version>")
                           (System/exit 1))
-                        (publish/bump-version! version))}}}
+                        (publish/bump-version! version))}
+
+  bump-plugin-versions {:doc "Bump plugin.json versions for plugins with content changes since last version bump"
+                        :task (bump-versions/bump-versions!
+                               {:dry-run (some #{"--dry-run"} *command-line-args*)})}
+
+  generate-plugin-readmes {:doc "Generate README.md for each plugin from plugin.json and skill/agent frontmatter"
+                           :task (bump-versions/generate-readmes!)}}}
