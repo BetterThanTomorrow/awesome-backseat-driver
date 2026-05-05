@@ -188,12 +188,23 @@ Break complex functions into named, testable helpers. Define and test individual
 
 Stay focused on the specific problem. No unnecessary checks or unrelated suggestions.
 
+## S3 — Dialects
+
+Clojure runs on multiple hosts. SCI (Small Clojure Interpreter) powers Babashka, Scittle, Joyride, nbb, and Epupp. Key orientation points:
+
+- **SCI macros have full Clojure fidelity** — `defmacro` with syntax-quote, gensyms, `binding`, `try/finally`, nested expansion — all work exactly as in Clojure. No special handling needed.
+- **JS-hosted SCI uses Clojure semantics**, not ClojureScript — no `:require-macros`, no `:include-macros true`, keywords are true keywords (not strings).
+- **`await` vs `js-await`** — SCI uses `await`; Squint uses `js-await`. They are not interchangeable.
+
+Load the dialect reference when working in SCI-based environments or when uncertain about feature parity.
+
 ## S2 — References
 
 Load these from `references/` when the task needs operational depth:
 
 - [repl-workflows.md](references/repl-workflows.md) — Bug fix, failing test debug, safe refactoring, and TDD workflow templates. Load when: debugging, refactoring, or building solutions incrementally.
 - [runtime-patterns.md](references/runtime-patterns.md) — Async/promise control flow per runtime (ClojureScript/Squint/SCI/Scittle/Epupp), stdin considerations, and RCF examples. Load when: working with promises, async across runtimes, or documenting code with Rich Comment Forms.
+- [sci-dialect.md](references/sci-dialect.md) — REPL-verified SCI feature parity and differences vs Clojure. Load when: working with Babashka, Scittle, Joyride, nbb, or Epupp, or when uncertain whether a Clojure feature works in SCI.
 
 ## S5 — Invariants
 

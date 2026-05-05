@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+- Add Clojure dialects section to `clojure` skill, plus first stab at dialect references
+
 ## [1.0.3] - 2026-04-30
 
 - Add joyride plugin (routing skill to load Joyride extension's bundled skills)

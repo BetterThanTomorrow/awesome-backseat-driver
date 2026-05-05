@@ -28,11 +28,12 @@ Epupp is a browser extension (Chrome/Firefox/Safari) for live tampering with web
 
 ## Essential Knowledge
 
-Epupp runs **Scittle** (SCI in the browser) — not standard ClojureScript, not Node.js, not JVM.
+Epupp runs **Scittle** (SCI in the browser) — not standard ClojureScript, not Node.js, not JVM. For macros, Clojure semantics apply (not ClojureScript): no `:require-macros`, no `:include-macros true`. For comprehensive SCI feature parity details, load `references/sci-dialect.md` from the Clojure skill.
 
 - Direct DOM access via `js/` interop
 - Limited to bundled Scittle libraries (see table below)
 - Full async/await support: `^:async` functions + `await`
+- Full Clojure macro system: `defmacro` with syntax-quote, gensyms, `binding`, `try/finally` — identical to Clojure, no limitations
 - Multimethods work: `defmulti`, `defmethod`, hierarchies
 - Most of `clojure.core` is available
 - Keywords are true Clojure keywords (unlike Squint where they're strings)

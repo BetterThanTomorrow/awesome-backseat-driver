@@ -7,6 +7,10 @@ description: 'Joyride development — VS Code scripting with ClojureScript. Use 
 
 This is a routing skill. The Joyride VS Code extension bundles comprehensive skills — this plugin ensures they are loaded before any Joyride work begins.
 
+## SCI Runtime
+
+Joyride is powered by SCI (Small Clojure Interpreter) with full Clojure macro fidelity — `defmacro`, syntax-quote, gensyms, `binding`, `try/finally` all work identically to Clojure. No `:require-macros` needed; For macros, Clojure semantics apply, not ClojureScript. For comprehensive SCI feature parity details, load `references/sci-dialect.md` from the Clojure skill.
+
 ## Mandatory Skill Loading
 
 Before any Joyride work, load the following skills from the Joyride extension:

@@ -5,7 +5,9 @@ description: "Write idiomatic Babashka (bb) scripts and modules. Covers babashka
 
 # Babashka
 
-Babashka is a fast-starting Clojure interpreter for scripting. Prefer Babashka built-in namespaces over shell commands and external tools.
+Babashka is a fast-starting Clojure interpreter for scripting, powered by SCI. It has the full Clojure macro system (`defmacro`, syntax-quote, gensyms, `binding`, `try/finally`) — identical to Clojure, no limitations. For comprehensive SCI feature parity details, load `references/sci-dialect.md` from the Clojure skill.
+
+Prefer Babashka built-in namespaces over shell commands and external tools.
 
 ## Principles
 
