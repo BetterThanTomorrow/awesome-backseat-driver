@@ -2,7 +2,7 @@
   "name" : "awesome-backseat-driver",
   "metadata" : {
     "description" : "Clojure AI context plugins for GitHub Copilot — agents, skills, and workflows for REPL-first interactive programming with Calva Backseat Driver.",
-    "version" : "1.0.9",
+    "version" : "1.0.10",
     "pluginRoot" : "./plugins"
   },
   "owner" : {
