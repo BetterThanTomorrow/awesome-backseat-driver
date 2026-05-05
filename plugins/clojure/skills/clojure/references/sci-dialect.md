@@ -37,12 +37,13 @@ These features work identically to Clojure — no special handling required:
 - **Destructuring** — all forms: sequential, associative, `& rest`, `:keys`, `:as`, nested
 - **Metadata** — `^:keyword`, `with-meta`, `meta`, `vary-meta`
 - **Namespaces** — `ns`, `require`, `refer`, `alias`, `in-ns`
+- **Sets as functions** — `(#{:a :b} :a)` → `:a` — sets are callable, unlike in Squint
 - **Error handling** — `try`/`catch`/`finally`, `ex-info`/`ex-data`, `throw`
 - **Core library** — most of `clojure.core`, `clojure.string`, `clojure.set`, `clojure.walk`, `clojure.edn`
 
 ## JS-Hosted SCI: Clojure Semantics, Not ClojureScript
 
-SCI on JavaScript runtimes (Scittle, Joyride, nbb, Epupp) uses **Clojure semantics** with JS interop — not ClojureScript semantics:
+SCI on JavaScript runtimes (Scittle, Joyride, nbb) uses **Clojure semantics** with JS interop — not ClojureScript semantics:
 
 - **Macros** follow Clojure, not ClojureScript (no separate macro namespace, no `:require-macros`)
 - **Keywords** are true Clojure keywords (not strings as in Squint)
@@ -78,8 +79,30 @@ Genuine differences — these require adaptation:
 - `bb.edn` for task configuration
 - Pods for extending functionality
 
-## Scittle/Epupp-Specific
+## Scittle-Specific
 
 - Runs in browser — full DOM access via `js/` interop
 - Available namespaces depend on which Scittle plugins are loaded
 - `sci.core` namespace available for meta-programming (eval within eval)
+
+## nbb-Specific
+
+- SCI running on Node.js — full Node.js API access via `js/` interop
+- Can `require` npm modules directly: `(require '["fs" :as fs])`
+- `nbb.core/load-file` and `nbb.core/load-string` for dynamic loading
+- Uses `await` (SCI-style `^:async` + `await`, not Squint's `js-await`)
+- `js/process`, `js/require`, `js/console` — standard Node.js globals available
+- `package.json` dependencies are accessible after `npm install`
+- Reader conditional feature: `:org.babashka/nbb`
+- REPL: `npx nbb nrepl-server` starts an nREPL server
+
+## Joyride-Specific
+
+- SCI running inside VS Code's extension host (Node.js context)
+- Full VS Code API access: `(require '["vscode" :as vscode])` — ES module-style require
+- `process.cwd()` is undefined — use `vscode/workspace.workspaceFolders` for paths
+- Two script scopes: User (`~/.config/joyride/`) and Workspace (`.joyride/`)
+- Activation scripts: `user_activate.cljs` / `workspace_activate.cljs` run on startup
+- Flares: keyboard-triggered evaluations of tagged forms in scripts
+- Uses `await` (SCI-style `^:async` + `await`)
+- Can register commands, keybindings, and disposables via VS Code API

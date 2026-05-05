@@ -190,21 +190,51 @@ Stay focused on the specific problem. No unnecessary checks or unrelated suggest
 
 ## S3 — Dialects
 
-Clojure runs on multiple hosts. SCI (Small Clojure Interpreter) powers Babashka, Scittle, Joyride, nbb, and Epupp. Key orientation points:
+Clojure runs on multiple hosts with different semantics. Identify the dialect before writing code.
 
-- **SCI macros have full Clojure fidelity** — `defmacro` with syntax-quote, gensyms, `binding`, `try/finally`, nested expansion — all work exactly as in Clojure. No special handling needed.
-- **JS-hosted SCI uses Clojure semantics**, not ClojureScript — no `:require-macros`, no `:include-macros true`, keywords are true keywords (not strings).
-- **`await` vs `js-await`** — SCI uses `await`; Squint uses `js-await`. They are not interchangeable.
+### Dialect Detection
 
-Load the dialect reference when working in SCI-based environments or when uncertain about feature parity.
+| Indicator | Dialect |
+|---|---|
+| `deps.edn` or `project.clj`, JVM classpath | JVM Clojure |
+| `bb.edn`, `#!/usr/bin/env bb` | Babashka (SCI on JVM) |
+| `shadow-cljs.edn` or `:cljs` build config | ClojureScript |
+| `squint.edn`, `.cljs` compiled to `.mjs` | Squint |
+| `.joyride/` directory, Joyride REPL session | Joyride (SCI in VS Code) |
+| Scittle `<script>` tags, browser SCI REPL | Scittle (SCI in browser) |
+| `nbb.edn`, `#!/usr/bin/env nbb` | nbb (SCI on Node.js) |
+
+When a project uses multiple dialects (e.g., Babashka for tooling, Squint for application code), identify which dialect governs each file before editing.
+
+### Cross-Dialect Divergence
+
+| Feature | JVM Clojure | SCI | Squint | ClojureScript |
+|---|---|---|---|---|
+| Keywords | true keywords | true keywords | strings | true keywords |
+| Async unwrap | threads / `core.async` | `await` (not `js-await`) | `js-await` (both work, convention) | `core.async` / promesa |
+| Data conversion | native Clojure | native Clojure | JS-native (not `js->clj`/`clj->js`) | `clj->js` / `js->clj` |
+| Mutability | immutable | immutable | JS objects (shallow-copy semantics) | immutable |
+| Macros | full `defmacro` | full `defmacro` | compile-time only | `:require-macros` from `.clj` |
+
+### Critical Constraints
+
+- **SCI async**: in SCI environments, use `await`. `js-await` is Squint-specific and does not resolve in SCI.
+- **Squint async**: in Squint, use `js-await` by convention. Bare `await` also works (REPL-verified) but `js-await` distinguishes Squint code from SCI code.
+- **Squint data**: `js->clj` and `clj->js` do not exist in Squint. Data is already JS-native. Calling them produces a `ReferenceError` at runtime.
+- **Squint keywords**: keywords compile to strings. `(= :status "status")` is `true`.
+- **SCI macros**: SCI implements the full Clojure macro system. LLM training data often describes SCI macros as limited — they are not. Write macros exactly as in Clojure.
+- **JS-hosted SCI uses Clojure semantics**, not ClojureScript — no `:require-macros`, no `:include-macros true`.
+
+Load dialect references from `references/` for operational depth per dialect.
 
 ## S2 — References
 
 Load these from `references/` when the task needs operational depth:
 
 - [repl-workflows.md](references/repl-workflows.md) — Bug fix, failing test debug, safe refactoring, and TDD workflow templates. Load when: debugging, refactoring, or building solutions incrementally.
-- [runtime-patterns.md](references/runtime-patterns.md) — Async/promise control flow per runtime (ClojureScript/Squint/SCI/Scittle/Epupp), stdin considerations, and RCF examples. Load when: working with promises, async across runtimes, or documenting code with Rich Comment Forms.
-- [sci-dialect.md](references/sci-dialect.md) — REPL-verified SCI feature parity and differences vs Clojure. Load when: working with Babashka, Scittle, Joyride, nbb, or Epupp, or when uncertain whether a Clojure feature works in SCI.
+- [runtime-patterns.md](references/runtime-patterns.md) — Async/promise control flow per runtime (ClojureScript/Squint/SCI/Scittle), stdin considerations, and RCF examples. Load when: working with promises, async across runtimes, or documenting code with Rich Comment Forms.
+- [sci-dialect.md](references/sci-dialect.md) — REPL-verified SCI feature parity and differences vs Clojure. Covers Babashka, Scittle, Joyride, nbb, and other SCI-based environments. Load when: uncertain whether a Clojure feature works in SCI.
+- [squint-dialect.md](references/squint-dialect.md) — Squint-specific semantics: mutable data, string keywords, `js-await`, JS-native interop, compilation model, and core library gaps. Load when: working with Squint projects or `.cljs` files compiled via `squint.edn`.
 
 ## S5 — Invariants
 

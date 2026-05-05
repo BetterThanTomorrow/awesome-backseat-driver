@@ -36,7 +36,7 @@ Mark functions `^:async`, unwrap promises with `js-await`. Use `loop/recur` for 
         (recur (rest remaining))))))
 ```
 
-### SCI/Scittle/Epupp
+### SCI (Scittle/Epupp, Joyride, nbb)
 
 Mark functions `^:async`, unwrap promises with `await` (bare — NOT `js-await`). `doseq` with `await` works in SCI.
 
