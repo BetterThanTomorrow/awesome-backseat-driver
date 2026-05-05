@@ -1,7 +1,7 @@
 {
   "name" : "babashka",
   "description" : "Babashka scripting and bb.edn task skills for idiomatic Babashka development.",
-  "version" : "0.1.0",
+  "version" : "0.1.1",
   "keywords" : [ "clojure", "repl", "interactive-programming", "calva", "backseat-driver" ],
   "author" : {
     "name" : "BetterThanTomorrow"

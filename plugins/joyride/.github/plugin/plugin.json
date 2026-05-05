@@ -1,7 +1,7 @@
 {
   "name" : "joyride",
   "description" : "Joyride scripting for VS Code — ensures Joyride extension skills are loaded before working with Joyride.",
-  "version" : "0.1.0",
+  "version" : "0.1.1",
   "keywords" : [ "joyride", "clojurescript", "vscode", "scripting", "repl" ],
   "author" : {
     "name" : "BetterThanTomorrow"
