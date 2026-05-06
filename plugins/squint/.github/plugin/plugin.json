@@ -1,7 +1,7 @@
 {
   "name" : "squint",
   "description" : "Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects.",
-  "version" : "0.1.0",
+  "version" : "0.1.1",
   "keywords" : [ "clojure", "squint", "clojurescript", "repl", "interactive-programming", "calva", "backseat-driver" ],
   "author" : {
     "name" : "BetterThanTomorrow"
