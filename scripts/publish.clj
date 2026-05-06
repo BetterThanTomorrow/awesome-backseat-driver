@@ -204,37 +204,52 @@
                            fm-lines))))))))
 
 (defn- collect-plugin-items
-  "Collects skill and agent names from a plugin directory using its plugin.json."
+  "Collects skill and agent names with paths from a plugin directory using its plugin.json."
   [plugin-dir pj]
-  (let [skill-names (->> (:skills pj [])
-                         (keep (fn [ref]
-                                 (let [path (str plugin-dir "/" ref "/SKILL.md")]
-                                   (when (fs/exists? path)
-                                     (get (parse-frontmatter path) "name")))))
-                         vec)
-        agent-names (->> (:agents pj [])
-                         (mapcat (fn [ref]
-                                   (let [path (str plugin-dir "/" ref)]
-                                     (if (fs/directory? path)
-                                       (->> (fs/list-dir path)
-                                            (filter #(string/ends-with? (str %) ".md"))
-                                            (keep #(get (parse-frontmatter (str %)) "name")))
-                                       (when (fs/exists? path)
-                                         [(get (parse-frontmatter path) "name")])))))
-                         (remove nil?)
-                         vec)]
-    {:skills skill-names :agents agent-names}))
+  (let [skills (->> (:skills pj [])
+                    (keep (fn [ref]
+                            (let [ref (string/replace-first ref #"^\./" "")
+                                  skill-md (str plugin-dir "/" ref "/SKILL.md")]
+                              (when (fs/exists? skill-md)
+                                {:name (get (parse-frontmatter skill-md) "name")
+                                 :path (str plugin-dir "/" ref)}))))
+                    vec)
+        agents (->> (:agents pj [])
+                    (mapcat (fn [ref]
+                              (let [ref (string/replace-first ref #"^\./" "")
+                                    path (str plugin-dir "/" ref)]
+                                (if (fs/directory? path)
+                                  (->> (fs/list-dir path)
+                                       (filter #(string/ends-with? (str %) ".md"))
+                                       (keep (fn [f]
+                                               (let [fm (parse-frontmatter (str f))]
+                                                 (when (get fm "name")
+                                                   {:name (get fm "name")
+                                                    :path (str f)})))))
+                                  (when (fs/exists? path)
+                                    (let [fm (parse-frontmatter path)]
+                                      (when (get fm "name")
+                                        [{:name (get fm "name")
+                                          :path path}])))))))
+                    vec)]
+    {:skills skills :agents agents}))
+
+(defn- format-item-link
+  "Formats a single item as a markdown link, stripping leading ./"
+  [{:keys [name path]}]
+  (let [link-path (string/replace-first path #"^\./" "")]
+    (str "[" name "](" link-path ")")))
 
 (defn- format-items
-  "Formats skill and agent names for table display."
+  "Formats skill and agent names as linked items for table display."
   [{:keys [skills agents]}]
   (let [parts (concat
                (when (seq agents)
                  [(str (if (> (count agents) 1) "Agents" "Agent") ": "
-                       (string/join ", " agents))])
+                       (string/join ", " (map format-item-link agents)))])
                (when (seq skills)
                  [(str (if (> (count skills) 1) "Skills" "Skill") ": "
-                       (string/join ", " skills))]))]
+                       (string/join ", " (map format-item-link skills)))]))]
     (string/join " · " parts)))
 
 (defn generate-plugins-table
@@ -265,7 +280,7 @@
                                 #"(?s)<!-- plugins-table-start -->\n.*?\n<!-- plugins-table-end -->"
                                 (str "<!-- plugins-table-start -->\n" table "\n<!-- plugins-table-end -->"))]
     (if (= readme updated)
-      (println "README.md plugins table: no markers found, skipping.")
+      (println "README.md plugins table: already up to date.")
       (do
         (spit "README.md" updated)
         (println "README.md plugins table updated.")))))
