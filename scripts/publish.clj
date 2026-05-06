@@ -1,5 +1,6 @@
 (ns publish
-  (:require [babashka.process :as p]
+  (:require [babashka.fs :as fs]
+            [babashka.process :as p]
             [cheshire.core :as json]
             [clojure.string :as string]))
 
@@ -183,14 +184,75 @@
 ;; README generation
 ;; ============================================================
 
+(defn- parse-frontmatter
+  "Parses YAML frontmatter from a markdown file. Returns a map of string keys to values."
+  [path]
+  (let [content (slurp (str path))
+        lines (string/split-lines content)]
+    (when (= "---" (first lines))
+      (let [end-idx (->> (rest lines)
+                         (map-indexed vector)
+                         (some (fn [[i l]] (when (= "---" l) (inc i)))))]
+        (when end-idx
+          (let [fm-lines (subvec (vec lines) 1 end-idx)]
+            (into {} (keep (fn [l]
+                             (let [[_ k v] (re-matches #"(\w+):\s+(.*)" l)]
+                               (when (and k v)
+                                 [k (-> v
+                                        string/trim
+                                        (string/replace #"^['\"](.*)['\"]\.?\s*$" "$1"))])))
+                           fm-lines))))))))
+
+(defn- collect-plugin-items
+  "Collects skill and agent names from a plugin directory using its plugin.json."
+  [plugin-dir pj]
+  (let [skill-names (->> (:skills pj [])
+                         (keep (fn [ref]
+                                 (let [path (str plugin-dir "/" ref "/SKILL.md")]
+                                   (when (fs/exists? path)
+                                     (get (parse-frontmatter path) "name")))))
+                         vec)
+        agent-names (->> (:agents pj [])
+                         (mapcat (fn [ref]
+                                   (let [path (str plugin-dir "/" ref)]
+                                     (if (fs/directory? path)
+                                       (->> (fs/list-dir path)
+                                            (filter #(string/ends-with? (str %) ".md"))
+                                            (keep #(get (parse-frontmatter (str %)) "name")))
+                                       (when (fs/exists? path)
+                                         [(get (parse-frontmatter path) "name")])))))
+                         (remove nil?)
+                         vec)]
+    {:skills skill-names :agents agent-names}))
+
+(defn- format-items
+  "Formats skill and agent names for table display."
+  [{:keys [skills agents]}]
+  (let [parts (concat
+               (when (seq agents)
+                 [(str (if (> (count agents) 1) "Agents" "Agent") ": "
+                       (string/join ", " agents))])
+               (when (seq skills)
+                 [(str (if (> (count skills) 1) "Skills" "Skill") ": "
+                       (string/join ", " skills))]))]
+    (string/join " · " parts)))
+
 (defn generate-plugins-table
-  "Generates a markdown table of plugins from marketplace.json."
+  "Generates a markdown table of plugins with links and contents from marketplace.json."
   []
   (let [marketplace (json/parse-string (slurp marketplace-path) true)
+        plugin-root (get-in marketplace [:metadata :pluginRoot] "./plugins")
         plugins (:plugins marketplace)
-        header "| Plugin | Description |\n|---|---|"
-        rows (mapv (fn [{:keys [name description]}]
-                     (str "| `" name "` | " description " |"))
+        header "| Plugin | Description | Contents |\n|---|---|---|"
+        rows (mapv (fn [{:keys [name source description]}]
+                     (let [plugin-dir (str plugin-root "/" source)
+                           link-path (string/replace-first plugin-dir #"^\./" "")
+                           pj-path (str plugin-dir "/.github/plugin/plugin.json")
+                           items (when (fs/exists? pj-path)
+                                   (let [pj (json/parse-string (slurp pj-path) true)]
+                                     (collect-plugin-items plugin-dir pj)))
+                           items-str (format-items items)]
+                       (str "| [" name "](" link-path "/) | " description " | " items-str " |")))
                    plugins)]
     (str header "\n" (string/join "\n" rows))))
 
