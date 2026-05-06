@@ -1,6 +1,6 @@
 ---
 name: babashka-tasks
-description: "Write idiomatic bb.edn tasks: thin wrappers delegating to scripts/*.clj modules. Use when: creating or modifying a bb task, babashka tasks, editing bb.edn or {scripts,bb}/*.clj files, using Backset Driver tools with Babashka."
+description: "Write idiomatic bb.edn tasks: thin wrappers delegating to scripts/*.clj modules. Use when: creating or modifying a bb task, babashka tasks, editing bb.edn or {scripts,bb}/*.clj files, using Backseat Driver tools with Babashka."
 ---
 
 # Babashka Tasks

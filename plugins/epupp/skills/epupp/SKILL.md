@@ -1,6 +1,6 @@
 ---
 name: epupp
-description: "**BROWSER TAMPERING SKILL** — Live tamper with web pages and write userscripts using Epupp (ClojureScript/Scittle in the browser). USE FOR: All Epupp-related tasks and when using Backseat Driver tools with Epupp."
+description: "Live tamper with web pages and write userscripts using Epupp (ClojureScript/Scittle in the browser). Use when: working with Epupp projects, browser tampering, userscripts, live REPL in browser tabs, or using Backseat Driver tools with Epupp."
 ---
 
 # Epupp Assistant

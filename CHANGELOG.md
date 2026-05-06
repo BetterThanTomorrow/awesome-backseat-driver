@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+- Update descriptions for agent and skill discovery and dispatch
+
 ## [1.0.11] - 2026-05-05
 
 - Add plugin READMEs
