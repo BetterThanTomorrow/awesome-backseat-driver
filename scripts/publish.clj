@@ -181,6 +181,42 @@
     (println (str "Bumped " marketplace-path " to v" version))))
 
 ;; ============================================================
+;; Marketplace plugins generation
+;; ============================================================
+
+(defn- scan-plugin-dirs
+  "Returns sorted list of plugin directories that have a plugin.json."
+  []
+  (let [marketplace (json/parse-string (slurp marketplace-path) true)
+        plugin-root (get-in marketplace [:metadata :pluginRoot] "./plugins")]
+    (->> (fs/list-dir plugin-root)
+         (filter fs/directory?)
+         (filter #(fs/exists? (str % "/.github/plugin/plugin.json")))
+         (sort-by str)
+         vec)))
+
+(defn- plugin-dir->entry
+  "Reads a plugin directory's plugin.json and returns a marketplace entry."
+  [plugin-dir]
+  (let [pj (json/parse-string (slurp (str plugin-dir "/.github/plugin/plugin.json")) true)
+        dir-name (str (fs/file-name plugin-dir))]
+    {:name (:name pj)
+     :source dir-name
+     :description (:description pj)
+     :version (:version pj)}))
+
+(defn generate-marketplace-plugins!
+  "Regenerates the plugins array in marketplace.json from plugin directories."
+  []
+  (let [content (slurp marketplace-path)
+        parsed (json/parse-string content true)
+        plugin-dirs (scan-plugin-dirs)
+        plugins (mapv plugin-dir->entry plugin-dirs)
+        updated (assoc parsed :plugins plugins)]
+    (spit marketplace-path (json/generate-string updated {:pretty true}))
+    (println (str "marketplace.json: updated " (count plugins) " plugins."))))
+
+;; ============================================================
 ;; README generation
 ;; ============================================================
 

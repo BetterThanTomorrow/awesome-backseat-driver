@@ -43,12 +43,11 @@ You can of course just copy the content of anything you want on your machine(s) 
 <!-- plugins-table-start -->
 | Plugin | Description | Contents |
 |---|---|---|
+| [babashka](plugins/babashka/) | Babashka scripting and bb.edn task skills for idiomatic Babashka development. | Skills: [babashka](plugins/babashka/skills/babashka), [babashka-tasks](plugins/babashka/skills/babashka-tasks) |
 | [clojure](plugins/clojure/) | REPL-first Clojure development — agent and skill for any dialect and runtime. | Agent: [Clojure](plugins/clojure/agents/clojure.md) · Skill: [clojure](plugins/clojure/skills/clojure) |
 | [clojure-editor](plugins/clojure-editor/) | Subagent for editing Clojure files using Backseat Driver structural editing tools. | Agent: [Clojure-editor](plugins/clojure-editor/agents/clojure-editor.md) |
-| [babashka](plugins/babashka/) | Babashka scripting and bb.edn task skills for idiomatic Babashka development. | Skills: [babashka](plugins/babashka/skills/babashka), [babashka-tasks](plugins/babashka/skills/babashka-tasks) |
 | [epupp](plugins/epupp/) | Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser). | Skill: [epupp](plugins/epupp/skills/epupp) |
 | [squint](plugins/squint/) | Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects. | Skill: [squint](plugins/squint/skills/squint) |
-| [joyride](plugins/joyride/) | Joyride scripting for VS Code — ensures Joyride extension skills are loaded before working with Joyride. | Skill: [joyride](plugins/joyride/skills/joyride) |
 <!-- plugins-table-end -->
 
 ## Instructions

@@ -18,10 +18,12 @@
                       (bump-versions/bump-versions! {})
                       (bump-versions/generate-readmes!)
                       (publish/ci-release! version)
+                      (publish/generate-marketplace-plugins!)
                       (publish/update-readme!))}
 
-  update-readme {:doc "Regenerate the plugins table in README.md from marketplace.json"
-                 :task (publish/update-readme!)}
+  update-readme {:doc "Regenerate marketplace.json plugins and README.md table"
+                 :task (do (publish/generate-marketplace-plugins!)
+                           (publish/update-readme!))}
 
   bump-version {:doc "CI-only: bump marketplace version without changelog changes"
                 :task (let [version (first *command-line-args*)]

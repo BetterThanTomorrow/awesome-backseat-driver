@@ -1,7 +1,6 @@
 (ns validate
   (:require [babashka.fs :as fs]
-            [cheshire.core :as json]
-            [clojure.string :as string]))
+            [cheshire.core :as json]))
 
 (def required-plugin-fields [:name :version :description])
 
@@ -30,16 +29,6 @@
                               (mapv #(str "Agents path '" % "' not found in " plugin-dir)))]
         (into [] (concat missing-fields skill-errors agent-errors))))))
 
-(defn- find-unregistered-plugins
-  "Finds plugin directories on disk that have a plugin.json but aren't in marketplace.json."
-  [plugin-root plugins]
-  (let [registered-sources (into #{} (map :source plugins))]
-    (->> (fs/list-dir plugin-root)
-         (filter fs/directory?)
-         (filter #(fs/exists? (str % "/.github/plugin/plugin.json")))
-         (remove #(registered-sources (fs/file-name %)))
-         (mapv #(str "Plugin directory '" (fs/file-name %) "' has a plugin.json but is not registered in marketplace.json")))))
-
 (defn- validate-marketplace
   "Validates marketplace.json structure and all referenced plugins."
   []
@@ -53,8 +42,7 @@
                                  [(str "No 'plugins' array in " marketplace-path)])]
         (or marketplace-errors
             (into []
-                  (concat
-                   (mapcat
+                  (mapcat
                     (fn [{:keys [name source]}]
                       (let [plugin-dir (str plugin-root "/" source)
                             plugin-json-path (str plugin-dir "/.github/plugin/plugin.json")]
@@ -68,8 +56,7 @@
 
                           (fs/exists? plugin-json-path)
                           (into (validate-plugin-json plugin-dir plugin-json-path)))))
-                    plugins)
-                   (find-unregistered-plugins plugin-root plugins))))))))
+                    plugins)))))))
 
 (defn validate!
   "Validates plugin structure. Prints results and exits with appropriate code."

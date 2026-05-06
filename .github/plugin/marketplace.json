@@ -9,6 +9,11 @@
     "name" : "BetterThanTomorrow"
   },
   "plugins" : [ {
+    "name" : "babashka",
+    "source" : "babashka",
+    "description" : "Babashka scripting and bb.edn task skills for idiomatic Babashka development.",
+    "version" : "0.1.2"
+  }, {
     "name" : "clojure",
     "source" : "clojure",
     "description" : "REPL-first Clojure development — agent and skill for any dialect and runtime.",
@@ -19,11 +24,6 @@
     "description" : "Subagent for editing Clojure files using Backseat Driver structural editing tools.",
     "version" : "0.1.2"
   }, {
-    "name" : "babashka",
-    "source" : "babashka",
-    "description" : "Babashka scripting and bb.edn task skills for idiomatic Babashka development.",
-    "version" : "0.1.2"
-  }, {
     "name" : "epupp",
     "source" : "epupp",
     "description" : "Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser).",
@@ -32,11 +32,6 @@
     "name" : "squint",
     "source" : "squint",
     "description" : "Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects.",
-    "version" : "0.1.1"
-  }, {
-    "name" : "joyride",
-    "source" : "joyride",
-    "description" : "Joyride scripting for VS Code — ensures Joyride extension skills are loaded before working with Joyride.",
     "version" : "0.1.1"
   } ]
 }

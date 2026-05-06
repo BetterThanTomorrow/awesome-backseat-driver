@@ -6,7 +6,6 @@
             [publish]))
 
 (def plugin-root "./plugins")
-(def marketplace-path ".github/plugin/marketplace.json")
 
 ;; ============================================================
 ;; Pure helpers
@@ -64,20 +63,6 @@
                  (str "\"version\" : \"" current-version "\"")
                  (str "\"version\" : \"" new-version "\""))]
     (spit pj-path updated)))
-
-(defn- update-marketplace-versions!
-  "Updates plugin versions in marketplace.json to match bumped plugin.json versions."
-  [bumps]
-  (let [content (slurp marketplace-path)
-        parsed (json/parse-string content true)
-        bump-map (into {} (map (juxt :name :new-version) bumps))
-        updated-plugins (mapv (fn [plugin]
-                                (if-let [new-v (bump-map (:name plugin))]
-                                  (assoc plugin :version new-v)
-                                  plugin))
-                              (:plugins parsed))
-        updated (assoc parsed :plugins updated-plugins)]
-    (spit marketplace-path (json/generate-string updated {:pretty true}))))
 
 ;; ============================================================
 ;; Entry point
@@ -189,7 +174,6 @@
         (when-not dry-run
           (doseq [bump bumps]
             (update-plugin-json! bump))
-          (update-marketplace-versions! bumps)
           (println "Done."))
         (when dry-run
           (println "(dry run — no files changed)"))))))
