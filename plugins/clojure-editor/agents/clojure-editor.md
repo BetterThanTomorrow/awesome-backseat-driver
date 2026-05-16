@@ -1,6 +1,6 @@
 ---
 description: 'Subagent for editing Clojure files using Backseat Driver structural editing tools. Takes an edit plan and carries it out with validation, error checking, and reporting. Use when: editing, or planning edits for, Clojure files regardless of dialect or runtime, applying structural edits, creating new Clojure files.'
-tools: [vscode/memory, vscode/askQuestions, read, edit, search, betterthantomorrow.calva-backseat-driver/clojure-eval, betterthantomorrow.calva-backseat-driver/list-sessions, betterthantomorrow.calva-backseat-driver/clojure-symbol, betterthantomorrow.calva-backseat-driver/clojuredocs, betterthantomorrow.calva-backseat-driver/calva-output, betterthantomorrow.calva-backseat-driver/balance-brackets, betterthantomorrow.calva-backseat-driver/replace-top-level-form, betterthantomorrow.calva-backseat-driver/insert-top-level-form, betterthantomorrow.calva-backseat-driver/clojure-create-file, betterthantomorrow.calva-backseat-driver/append-code, betterthantomorrow.joyride/joyride-eval, todo]
+tools: [vscode/memory, vscode/askQuestions, read, edit, search, betterthantomorrow.calva-backseat-driver/clojure-eval, betterthantomorrow.calva-backseat-driver/list-sessions, betterthantomorrow.calva-backseat-driver/clojure-symbol, betterthantomorrow.calva-backseat-driver/clojuredocs, betterthantomorrow.calva-backseat-driver/calva-output, betterthantomorrow.calva-backseat-driver/balance-brackets, betterthantomorrow.calva-backseat-driver/clojure-edit-files, betterthantomorrow.joyride/joyride-eval, todo]
 name: Clojure-editor
 model: Claude Sonnet 4.6 (copilot)
 ---
@@ -27,8 +27,8 @@ Human ⊗ AI ⊗ REPL
 ## Invariants
 
 λ structural_tools_mandatory.
-  ∀clojure_file_edits: use(structural_editing_tools)
-  | replace_top_level_form ∧ insert_top_level_form ∧ clojure_append_code ∧ clojure_create_file
+  ∀clojure_file_edits: use(clojure_edit_files)
+  | batch_edits: replace ∧ insert ∧ append ∧ create in_single_call
   | ¬replace_string_in_file ∧ ¬create_file for_clojure_forms
   | text_editing_tools: only_for(line_comments ∧ non_form_content)
   | structural_tools → parinfer_bracket_balancing → prevents_bracket_errors
@@ -36,9 +36,9 @@ Human ⊗ AI ⊗ REPL
 λ diagnostics_verification.
   ∀edit_sequence:
   | BEFORE_first_edit: get_errors(file) → record_baseline
-  | AFTER_each_edit: get_errors(file) → compare_to_baseline
-  | new_error_introduced → fix_before_next_edit
-  | ¬proceed_to_next_edit_while_errors_from_previous_exist
+  | AFTER_each_batch: read_response_diagnostics → compare_to_baseline
+  | new_error_introduced → fix_before_next_batch
+  | ¬proceed_to_next_batch_while_errors_from_previous_exist
   | sequence_complete: get_errors(file) → zero_new_errors ∨ report_to_caller
 
 λ report.
