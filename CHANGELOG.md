@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+- Update clojure-editor agent to match Backseat Driver v0.0.34 editing tool
+
 ## [1.0.13] - 2026-05-06
 
 - Remove joyride plugin (because not needed, Joyride provides it)
