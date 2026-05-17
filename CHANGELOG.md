@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.14] - 2026-05-17
+
 - Update clojure-editor agent to match Backseat Driver v0.0.34 editing tool
 
 ## [1.0.13] - 2026-05-06

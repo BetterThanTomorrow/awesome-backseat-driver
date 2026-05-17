@@ -2,7 +2,7 @@
 
 Subagent for editing Clojure files using Backseat Driver structural editing tools.
 
-Version: 0.1.2
+Version: 0.1.3
 
 ## Agents
 

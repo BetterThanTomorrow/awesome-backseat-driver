@@ -22,7 +22,7 @@
     "name" : "clojure-editor",
     "source" : "clojure-editor",
     "description" : "Subagent for editing Clojure files using Backseat Driver structural editing tools.",
-    "version" : "0.1.2"
+    "version" : "0.1.3"
   }, {
     "name" : "epupp",
     "source" : "epupp",
