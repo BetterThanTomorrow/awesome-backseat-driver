@@ -45,7 +45,7 @@ You can of course just copy the content of anything you want on your machine(s) 
 |---|---|---|
 | [babashka](plugins/babashka/) | Babashka scripting and bb.edn task skills for idiomatic Babashka development. | Skills: [babashka](plugins/babashka/skills/babashka), [babashka-tasks](plugins/babashka/skills/babashka-tasks) |
 | [clojure](plugins/clojure/) | REPL-first Clojure development — general agent and skill for any dialect and runtime; pairs with clojure-editor for safe edit delegation. | Agent: [Clojure](plugins/clojure/agents/clojure.md) · Skill: [clojure](plugins/clojure/skills/clojure) |
-| [clojure-editor](plugins/clojure-editor/) | Companion editing agents for Clojure workflows: structural Clojure form edits and scoped non-Clojure/text-comment edits. | Agents: [Non-Clojure-Editor](plugins/clojure-editor/agents/non-clojure-editor.md), [Clojure-editor](plugins/clojure-editor/agents/clojure-editor.md) |
+| [clojure-editor](plugins/clojure-editor/) | Clojure-aware companion agents for safe, focused file edits. | Agents: [Non-Clojure-Editor](plugins/clojure-editor/agents/non-clojure-editor.md), [Clojure-editor](plugins/clojure-editor/agents/clojure-editor.md) |
 | [epupp](plugins/epupp/) | Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser). | Skill: [epupp](plugins/epupp/skills/epupp) |
 | [squint](plugins/squint/) | Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects. | Skill: [squint](plugins/squint/skills/squint) |
 <!-- plugins-table-end -->

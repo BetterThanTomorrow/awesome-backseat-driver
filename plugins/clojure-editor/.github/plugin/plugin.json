@@ -1,6 +1,6 @@
 {
   "name" : "clojure-editor",
-  "description" : "Companion editing agents for Clojure workflows: structural Clojure form edits and scoped non-Clojure/text-comment edits.",
+  "description" : "Clojure-aware companion agents for safe, focused file edits.",
   "version" : "0.1.6",
   "keywords" : [ "clojure", "repl", "interactive-programming", "calva", "backseat-driver" ],
   "author" : {

@@ -1,6 +1,6 @@
 # clojure-editor
 
-Companion editing agents for Clojure workflows: structural Clojure form edits and scoped non-Clojure/text-comment edits.
+Clojure-aware companion agents for safe, focused file edits.
 
 Version: 0.1.6
 
