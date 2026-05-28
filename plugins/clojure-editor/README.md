@@ -2,7 +2,7 @@
 
 Companion editing agents for Clojure workflows: structural Clojure form edits and scoped non-Clojure/text-comment edits.
 
-Version: 0.1.4
+Version: 0.1.5
 
 ## Agents
 
@@ -12,4 +12,4 @@ Scoped text-editing companion for Clojure workflows. Use when: editing non-Cloju
 
 ### Clojure-editor
 
-Subagent for editing Clojure files using Backseat Driver structural editing tools. Takes an edit plan and carries it out with validation, error checking, and reporting. Use when: editing, or planning edits for, Clojure files regardless of dialect or runtime, applying structural edits, creating new Clojure files.
+Subagent for editing Clojure files using Backseat Driver structural editing tools. Takes an edit plan and carries it out with validation, error checking, and reporting. Use when: editing Clojure forms, adding forms with adjacent top-level comments, applying structural edits, or creating new Clojure files.
