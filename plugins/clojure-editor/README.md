@@ -1,10 +1,14 @@
 # clojure-editor
 
-Subagent for editing Clojure files using Backseat Driver structural editing tools.
+Companion editing agents for Clojure workflows: structural Clojure form edits and scoped non-Clojure/text-comment edits.
 
-Version: 0.1.3
+Version: 0.1.4
 
 ## Agents
+
+### Non-Clojure-Editor
+
+Scoped text-editing companion for Clojure workflows. Use when: editing non-Clojure files such as Markdown, JSON, YAML, EDN config, README files, plugin metadata, or editing/removing existing standalone zero-depth top-level Clojure line-comment blocks. Not for Clojure forms or structural Clojure edits.
 
 ### Clojure-editor
 

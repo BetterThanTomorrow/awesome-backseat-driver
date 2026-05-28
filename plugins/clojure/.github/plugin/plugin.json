@@ -1,5 +1,5 @@
 {
-  "description" : "REPL-first Clojure development — agent and skill for any dialect and runtime.",
+  "description" : "REPL-first Clojure development — general agent and skill for any dialect and runtime; pairs with clojure-editor for safe edit delegation.",
   "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
   "license" : "MIT",
   "name" : "clojure",
@@ -8,6 +8,6 @@
     "name" : "BetterThanTomorrow"
   },
   "skills" : [ "./skills/clojure" ],
-  "version" : "0.1.2",
+  "version" : "0.1.3",
   "agents" : [ "./agents" ]
 }

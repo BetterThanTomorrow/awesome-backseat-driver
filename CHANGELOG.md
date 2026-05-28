@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+- Add flat Clojure edit delegation with structural and non-Clojure editor subagents.
+
 ## [1.0.14] - 2026-05-17
 
 - Update clojure-editor agent to match Backseat Driver v0.0.34 editing tool

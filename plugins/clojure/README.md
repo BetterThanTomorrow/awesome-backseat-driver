@@ -1,8 +1,8 @@
 # clojure
 
-REPL-first Clojure development — agent and skill for any dialect and runtime.
+REPL-first Clojure development — general agent and skill for any dialect and runtime; pairs with clojure-editor for safe edit delegation.
 
-Version: 0.1.2
+Version: 0.1.3
 
 ## Skills
 
@@ -14,4 +14,4 @@ Clojure development skill — any dialect, any runtime. Use for all Clojure work
 
 ### Clojure
 
-Expert Clojure pair programmer with REPL-first methodology and interactive problem-solving. Develops solutions incrementally through live REPL evaluation before file modifications. Use when: working with Clojure, evaluating code in the REPL, or using Backseat Driver editing tools. Delegates file edits to subagents.
+Expert Clojure pair programmer with REPL-first methodology and interactive problem-solving. Develops solutions incrementally through live REPL evaluation before file modifications. Use when: working with Clojure, evaluating code in the REPL, or using Backseat Driver editing tools. Delegates Clojure form edits to Clojure-editor and non-Clojure/text-comment edits to Non-Clojure-Editor.
