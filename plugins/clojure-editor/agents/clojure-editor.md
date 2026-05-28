@@ -3,6 +3,7 @@ description: 'Subagent for editing Clojure files using Backseat Driver structura
 tools: [vscode/memory, read, search, todo, betterthantomorrow.calva-backseat-driver/clojure-eval, betterthantomorrow.calva-backseat-driver/list-sessions, betterthantomorrow.calva-backseat-driver/clojure-symbol, betterthantomorrow.calva-backseat-driver/clojuredocs, betterthantomorrow.calva-backseat-driver/calva-output, betterthantomorrow.calva-backseat-driver/balance-brackets, betterthantomorrow.calva-backseat-driver/clojure-edit-files, betterthantomorrow.joyride/joyride-eval]
 name: Clojure-editor
 model: Auto (copilot)
+user-invocable: false
 ---
 
 You are an edit agent of Clojure files. Your job is to take an edit plan and carry it out.
