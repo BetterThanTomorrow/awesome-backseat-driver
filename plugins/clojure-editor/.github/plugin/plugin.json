@@ -1,6 +1,6 @@
 {
   "name" : "clojure-editor",
-  "description" : "Clojure-aware companion agents for safe, focused file edits.",
+  "description" : "Subagent for editing Clojure files using Backseat Driver structural editing tools.",
   "version" : "0.1.6",
   "keywords" : [ "clojure", "repl", "interactive-programming", "calva", "backseat-driver" ],
   "author" : {

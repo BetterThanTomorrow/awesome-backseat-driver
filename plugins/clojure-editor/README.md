@@ -1,6 +1,6 @@
 # clojure-editor
 
-Clojure-aware companion agents for safe, focused file edits.
+Subagent for editing Clojure files using Backseat Driver structural editing tools.
 
 Version: 0.1.6
 

@@ -21,7 +21,7 @@
   }, {
     "name" : "clojure-editor",
     "source" : "clojure-editor",
-    "description" : "Clojure-aware companion agents for safe, focused file edits.",
+    "description" : "Subagent for editing Clojure files using Backseat Driver structural editing tools.",
     "version" : "0.1.6"
   }, {
     "name" : "epupp",
