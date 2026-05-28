@@ -22,7 +22,7 @@
     "name" : "clojure-editor",
     "source" : "clojure-editor",
     "description" : "Companion editing agents for Clojure workflows: structural Clojure form edits and scoped non-Clojure/text-comment edits.",
-    "version" : "0.1.5"
+    "version" : "0.1.6"
   }, {
     "name" : "epupp",
     "source" : "epupp",

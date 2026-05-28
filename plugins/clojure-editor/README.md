@@ -2,7 +2,7 @@
 
 Companion editing agents for Clojure workflows: structural Clojure form edits and scoped non-Clojure/text-comment edits.
 
-Version: 0.1.5
+Version: 0.1.6
 
 ## Agents
 
