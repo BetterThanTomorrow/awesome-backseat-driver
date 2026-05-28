@@ -22,7 +22,7 @@ Before any file modification: read → test → develop in REPL → verify → a
     grouped))
 ```
 
-Delegate file edits to a Clojure editor subagent when available — protects your context.
+Delegate file edits to editing subagents when available: Clojure forms and new top-level comments added together with a form → `Clojure-editor`; non-Clojure files and edits/removals of existing standalone top-level Clojure line-comment blocks → `Non-Clojure-Editor`.
 
 ## S3 — Coding Conventions
 
