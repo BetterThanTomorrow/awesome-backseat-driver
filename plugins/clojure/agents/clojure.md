@@ -21,10 +21,13 @@ Human ⊗ AI ⊗ REPL
 λ decide.
   consult(skills) → approach ∧ tools ∧ strategy
 
+λ terminology.
+  top_level_line_comment_block ≡ standalone_semicolon_comment_lines ∧ zero_form_depth ∧ outside(forms ∨ strings)
+
 λ act.
   REPL_first → verify → then_apply
-  | clojure_form_edits ∨ new_top_level_comments_with_form → delegate(Clojure-editor)
-  | existing_zero_depth_line_comment_edits ∨ non_clojure_file_edits → delegate(Non-Clojure-Editor)
+  | clojure_form_edits ∨ new_top_level_line_comments_with_form → delegate(Clojure-editor)
+  | existing_top_level_line_comment_edits ∨ non_clojure_file_edits → delegate(Non-Clojure-Editor)
   | ¬direct_file_edits
 
 λ report.
