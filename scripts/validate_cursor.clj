@@ -11,7 +11,7 @@
 
 (defn- path-refs
   [plugin-dir pj key]
-  (->> (get pj key [])
+  (->> (cp/normalize-refs (get pj key))
        (mapcat (fn [ref]
                  (let [ref (string/replace-first ref #"^\./" "")
                        path (str plugin-dir "/" ref)]
@@ -24,12 +24,19 @@
 
 (defn- skill-md-files
   [plugin-dir pj]
-  (->> (:skills pj [])
+  (->> (cp/normalize-refs (:skills pj))
        (mapcat (fn [ref]
                  (let [ref (string/replace-first ref #"^\./" "")
-                       skill-md (str plugin-dir "/" ref "/SKILL.md")]
-                   (when (fs/exists? skill-md)
-                     [skill-md]))))))
+                       path (str plugin-dir "/" ref)]
+                   (if (fs/directory? path)
+                     (->> (fs/list-dir path)
+                          (filter #(fs/directory? (str path "/" %)))
+                          (map (fn [subdir]
+                                 (str path "/" subdir "/SKILL.md")))
+                          (filter fs/exists?))
+                     (let [skill-md (str path "/SKILL.md")]
+                       (when (fs/exists? skill-md)
+                         [skill-md]))))))))
 
 (defn- collect-md-files
   [plugin-dir pj]
@@ -65,7 +72,8 @@
 
 (defn- validate-paths
   [plugin-dir pj]
-  (let [refs (concat (:skills pj []) (:agents pj []) (:commands pj []) (:rules pj []))]
+  (let [refs (mapcat cp/normalize-refs [(get pj :skills) (get pj :agents)
+                                        (get pj :commands) (get pj :rules)])]
     (->> refs
          (remove (fn [ref]
                    (fs/exists? (str plugin-dir "/" (string/replace-first ref #"^\./" "")))))

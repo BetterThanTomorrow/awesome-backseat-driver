@@ -7,6 +7,6 @@
   "license" : "MIT",
   "name" : "epupp",
   "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
-  "skills" : [ "./skills/epupp" ],
+  "skills" : "./skills/",
   "version" : "0.1.2"
 }

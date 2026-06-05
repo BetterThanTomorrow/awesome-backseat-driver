@@ -30,3 +30,7 @@ Use a Babashka REPL (`bb` session) and the `babashka` / `babashka-tasks` skills 
 ## Host-specific fields
 
 Future Copilot-only or Cursor-only manifest fields (e.g. `hooks`, `mcpServers`) must pass through the Cursor generator’s schema key filter. Add allowed keys to `allowed-plugin-keys` in `scripts/cursor_plugin.clj` when Cursor’s schema expands.
+
+## Cursor component paths
+
+Copilot `plugin.json` may list specific skill paths as arrays (e.g. `["./skills/clojure"]`). The Cursor generator rewrites `skills`, `agents`, `commands`, and `rules` to **directory path strings** (e.g. `"./skills/"`, `"./agents/"`) — that is what Cursor’s loader expects for local and marketplace installs.

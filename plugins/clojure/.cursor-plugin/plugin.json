@@ -1,5 +1,5 @@
 {
-  "agents" : [ "./agents" ],
+  "agents" : "./agents/",
   "author" : {
     "name" : "BetterThanTomorrow"
   },
@@ -8,6 +8,6 @@
   "license" : "MIT",
   "name" : "clojure",
   "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
-  "skills" : [ "./skills/clojure" ],
+  "skills" : "./skills/",
   "version" : "0.1.4"
 }

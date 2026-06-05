@@ -7,6 +7,6 @@
   "license" : "MIT",
   "name" : "squint",
   "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
-  "skills" : [ "./skills/squint" ],
+  "skills" : "./skills/",
   "version" : "0.1.1"
 }

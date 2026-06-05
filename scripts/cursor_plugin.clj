@@ -13,6 +13,27 @@
     :repository :license :logo :keywords :category :tags :commands :agents
     :skills :rules :hooks :mcpServers})
 
+(def component-dir-keys
+  "Manifest keys that Cursor expects as directory path strings, not Copilot-style ref arrays."
+  #{:skills :agents :commands :rules})
+
+(defn normalize-refs
+  "Coerce plugin.json stringOrStringArray refs to a seq of path strings."
+  [v]
+  (cond
+    (nil? v) []
+    (string? v) [v]
+    (sequential? v) (vec v)
+    :else []))
+
+(defn- cursor-dir-ref
+  [key]
+  (case key
+    :skills "./skills/"
+    :agents "./agents/"
+    :commands "./commands/"
+    :rules "./rules/"))
+
 (defn sort-keys-deep
   "Recursively sorts map keys for stable JSON output."
   [x]
@@ -29,9 +50,17 @@
   (-> data sort-keys-deep (json/generate-string {:pretty true})))
 
 (defn copilot-plugin-json->cursor
-  "Filters a Copilot plugin.json map to Cursor-allowed keys."
+  "Filters a Copilot plugin.json map to Cursor-allowed keys and rewrites
+  component refs to directory path strings (Cursor loader convention)."
   [pj]
-  (into {} (filter (fn [[k _]] (allowed-plugin-keys k)) pj)))
+  (let [base (into {} (filter (fn [[k _]] (allowed-plugin-keys k)) pj))]
+    (reduce
+      (fn [m k]
+        (if (seq (normalize-refs (get pj k)))
+          (assoc m k (cursor-dir-ref k))
+          (dissoc m k)))
+      base
+      component-dir-keys)))
 
 (defn cursor-plugin-dir->entry
   "Builds a Cursor marketplace plugins[] entry (no version)."
