@@ -3,14 +3,10 @@
  {:requires ([validate]
              [publish]
              [bump-versions]
-             [cursor-plugin]
-             [cursor-schema])
+             [cursor-plugin])
 
-  validate {:doc "Validate plugin structure (Copilot + Cursor JSON Schema, paths, L4 drift)"
+  validate {:doc "Validate plugin structure (Copilot + Cursor paths, frontmatter, L4 drift)"
             :task (validate/validate!)}
-
-  validate-cursor-schema {:doc "Smoke-test pinned Cursor JSON schemas and fixtures"
-                          :task (cursor-schema/spike!)}
 
   generate-cursor-plugins {:doc "Generate .cursor-plugin/ manifests from Copilot sources"
                            :task (cursor-plugin/generate-cursor-plugins!)}

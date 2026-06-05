@@ -29,7 +29,7 @@ Use a Babashka REPL (`bb` session) and the `babashka` / `babashka-tasks` skills 
 
 ## Host-specific fields
 
-Future Copilot-only or Cursor-only manifest fields (e.g. `hooks`, `mcpServers`) must pass through the Cursor generator’s schema key filter. Add allowed keys to `allowed-plugin-keys` in `scripts/cursor_plugin.clj` when Cursor’s schema expands.
+Future Copilot-only or Cursor-only manifest fields (e.g. `hooks`, `mcpServers`) must pass through the Cursor generator’s key filter. Add allowed keys to `allowed-plugin-keys` in `scripts/cursor_plugin.clj` when Cursor adds new manifest fields.
 
 ## Cursor component paths
 

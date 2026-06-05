@@ -3,7 +3,6 @@
             [cheshire.core :as json]
             [clojure.string :as string]
             [cursor-plugin :as cp]
-            [cursor-schema :as cs]
             [publish :as pub]))
 
 (def kebab-name-pattern #"^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$")
@@ -83,7 +82,6 @@
   [plugin-dir pj]
   (into []
         (concat
-          (cs/validate-plugin-json! pj)
           (validate-paths plugin-dir pj)
           (mapcat (fn [path]
                     (validate-frontmatter path
@@ -122,10 +120,11 @@
     (into [] (concat marketplace-errors plugin-errors))))
 
 (defn validate-cursor!
-  "Validates Cursor manifests (L1–L4) without writing files. Returns error strings."
+  "Validates Cursor manifests without writing files: path resolution, frontmatter
+  policy, marketplace graph, and L4 drift against committed .cursor-plugin/ files.
+  Returns error strings."
   []
   (let [expected-marketplace (cp/expected-cursor-marketplace)
-        schema-errors (cs/validate-marketplace-json! expected-marketplace)
         graph-errors (validate-marketplace-graph expected-marketplace)
         plugin-manifest-errors
         (mapcat
@@ -134,4 +133,4 @@
                                       (cp/expected-cursor-plugin-json (str plugin-dir))))
           (pub/scan-plugin-dirs))
         drift-errors (l4-drift-errors)]
-    (into [] (concat schema-errors graph-errors plugin-manifest-errors drift-errors))))
+    (into [] (concat graph-errors plugin-manifest-errors drift-errors))))

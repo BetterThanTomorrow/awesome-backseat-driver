@@ -90,13 +90,7 @@ bb validate
 git add .github/plugin/ .cursor-plugin/
 ```
 
-`bb validate` runs Copilot checks plus strict Cursor validation (JSON Schema, path resolution, frontmatter policy, and L4 drift detection against committed `.cursor-plugin/` files).
-
-Install the Cursor schema validator once:
-
-```sh
-npm install --prefix schemas/cursor
-```
+`bb validate` runs Copilot checks plus Cursor validation (path resolution, frontmatter policy, and L4 drift detection against committed `.cursor-plugin/` files).
 
 ### Cursor
 
@@ -108,7 +102,7 @@ Generated `.cursor-plugin/marketplace.json` and `plugins/*/.cursor-plugin/plugin
 bb validate
 ```
 
-Checks Copilot and Cursor plugin structure: JSON Schema, required fields, referenced paths, frontmatter identifiers, and regeneration fidelity.
+Checks Copilot and Cursor plugin structure: required fields, referenced paths, frontmatter identifiers, and regeneration fidelity.
 
 ### Publishing a release
 

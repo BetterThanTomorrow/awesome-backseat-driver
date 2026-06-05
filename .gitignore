@@ -4,4 +4,4 @@
 .lsp/cache/
 .calva/mcp-server/port
 agent-plans/
-schemas/cursor/node_modules/
+node_modules/

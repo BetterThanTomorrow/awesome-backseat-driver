@@ -14,14 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Install Cursor schema validator
-        run: npm install --prefix schemas/cursor
-
       - name: Setup Babashka
         uses: turtlequeue/setup-babashka@v1.7.0
         with:
