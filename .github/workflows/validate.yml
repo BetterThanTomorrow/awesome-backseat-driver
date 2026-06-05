@@ -1,0 +1,34 @@
+name: Validate
+
+"on":
+  pull_request:
+    branches: [next]
+  push:
+    branches: [next]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || !startsWith(github.event.head_commit.message, '[publish]')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Cursor schema validator
+        run: npm install --prefix schemas/cursor
+
+      - name: Setup Babashka
+        uses: turtlequeue/setup-babashka@v1.7.0
+        with:
+          babashka-version: 1.12.196
+
+      - name: Validate plugins
+        run: bb validate
+
+      - name: Check Cursor manifest drift
+        run: git diff --exit-code -- .cursor-plugin/

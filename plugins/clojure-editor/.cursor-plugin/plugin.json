@@ -1,0 +1,12 @@
+{
+  "agents" : [ "./agents" ],
+  "author" : {
+    "name" : "BetterThanTomorrow"
+  },
+  "description" : "Subagent for editing Clojure files using Backseat Driver structural editing tools.",
+  "keywords" : [ "clojure", "repl", "interactive-programming", "calva", "backseat-driver" ],
+  "license" : "MIT",
+  "name" : "clojure-editor",
+  "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
+  "version" : "0.1.7"
+}

@@ -2,10 +2,18 @@
  :tasks
  {:requires ([validate]
              [publish]
-             [bump-versions])
+             [bump-versions]
+             [cursor-plugin]
+             [cursor-schema])
 
-  validate {:doc "Validate plugin structure (JSON, paths, marketplace consistency)"
+  validate {:doc "Validate plugin structure (Copilot + Cursor JSON Schema, paths, L4 drift)"
             :task (validate/validate!)}
+
+  validate-cursor-schema {:doc "Smoke-test pinned Cursor JSON schemas and fixtures"
+                          :task (cursor-schema/spike!)}
+
+  generate-cursor-plugins {:doc "Generate .cursor-plugin/ manifests from Copilot sources"
+                           :task (cursor-plugin/generate-cursor-plugins!)}
 
   publish {:doc "Validate and push a [publish] marker commit to trigger CI release"
            :task (publish/publish! {:dry-run (some #{"--dry-run"} *command-line-args*)})}
@@ -19,10 +27,12 @@
                       (bump-versions/generate-readmes!)
                       (publish/ci-release! version)
                       (publish/generate-marketplace-plugins!)
+                      (cursor-plugin/generate-cursor-plugins!)
                       (publish/update-readme!))}
 
-  update-readme {:doc "Regenerate marketplace.json plugins and README.md table"
+  update-readme {:doc "Regenerate marketplace.json plugins, Cursor manifests, and README.md table"
                  :task (do (publish/generate-marketplace-plugins!)
+                           (cursor-plugin/generate-cursor-plugins!)
                            (publish/update-readme!))}
 
   bump-version {:doc "CI-only: bump marketplace version without changelog changes"

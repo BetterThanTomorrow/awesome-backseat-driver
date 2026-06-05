@@ -1,0 +1,11 @@
+{
+  "name": "test-marketplace",
+  "plugins": [
+    {
+      "name": "example",
+      "source": "plugins/example",
+      "description": "Entry must not include version.",
+      "version": "1.0.0"
+    }
+  ]
+}

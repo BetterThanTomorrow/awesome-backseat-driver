@@ -1,6 +1,7 @@
 (ns validate
   (:require [babashka.fs :as fs]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [validate-cursor :as validate-cursor]))
 
 (def required-plugin-fields [:name :version :description])
 
@@ -29,8 +30,8 @@
                               (mapv #(str "Agents path '" % "' not found in " plugin-dir)))]
         (into [] (concat missing-fields skill-errors agent-errors))))))
 
-(defn- validate-marketplace
-  "Validates marketplace.json structure and all referenced plugins."
+(defn- validate-copilot-marketplace
+  "Validates Copilot marketplace.json structure and all referenced plugins."
   []
   (let [marketplace-path ".github/plugin/marketplace.json"
         {:keys [ok error]} (read-json marketplace-path)]
@@ -58,15 +59,22 @@
                           (into (validate-plugin-json plugin-dir plugin-json-path)))))
                     plugins)))))))
 
+(defn validate-copilot!
+  "Validates Copilot plugin structure. Returns error strings."
+  []
+  (validate-copilot-marketplace))
+
 (defn validate!
-  "Validates plugin structure. Prints results and exits with appropriate code."
+  "Validates Copilot and Cursor plugin structure. Prints results and exits."
   []
   (println "Validating plugin structure...")
-  (let [errors (validate-marketplace)]
+  (let [copilot-errors (validate-copilot!)
+        cursor-errors (validate-cursor/validate-cursor!)
+        errors (into [] (concat copilot-errors cursor-errors))]
     (if (seq errors)
       (do
         (doseq [e errors]
           (println (str "  ERROR: " e)))
         (println (str "\nValidation failed with " (count errors) " error(s)."))
         (System/exit 1))
-      (println "  All plugins valid."))))
+      (println "  All plugins valid (Copilot + Cursor)."))))

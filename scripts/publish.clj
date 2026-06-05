@@ -114,6 +114,7 @@
 (defn publish!
   "Validates preconditions and pushes a [publish] marker commit."
   [{:keys [dry-run]}]
+  ((requiring-resolve 'validate/validate!))
   (let [branch (git-current-branch)
         clean? (git-clean?)
         ff? (git-fast-forwardable?)
@@ -184,7 +185,7 @@
 ;; Marketplace plugins generation
 ;; ============================================================
 
-(defn- scan-plugin-dirs
+(defn scan-plugin-dirs
   "Returns sorted list of plugin directories that have a plugin.json."
   []
   (let [marketplace (json/parse-string (slurp marketplace-path) true)
@@ -220,7 +221,7 @@
 ;; README generation
 ;; ============================================================
 
-(defn- parse-frontmatter
+(defn parse-frontmatter
   "Parses YAML frontmatter from a markdown file. Returns a map of string keys to values."
   [path]
   (let [content (slurp (str path))

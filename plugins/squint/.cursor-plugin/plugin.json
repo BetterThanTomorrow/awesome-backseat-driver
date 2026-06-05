@@ -1,0 +1,12 @@
+{
+  "author" : {
+    "name" : "BetterThanTomorrow"
+  },
+  "description" : "Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects.",
+  "keywords" : [ "clojure", "squint", "clojurescript", "repl", "interactive-programming", "calva", "backseat-driver" ],
+  "license" : "MIT",
+  "name" : "squint",
+  "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
+  "skills" : [ "./skills/squint" ],
+  "version" : "0.1.1"
+}

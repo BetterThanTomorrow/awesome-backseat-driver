@@ -38,14 +38,16 @@ Instructions and prompts have install buttons in the rendered markdown from this
 
 You can of course just copy the content of anything you want on your machine(s) from this repo and configure manually in VS Code.
 
+The same repository URL works for [Cursor plugins](https://cursor.com/docs/plugins); see **Development** below for the dual-manifest workflow.
+
 ## Plugins
 
 <!-- plugins-table-start -->
 | Plugin | Description | Contents |
 |---|---|---|
 | [babashka](plugins/babashka/) | Babashka scripting and bb.edn task skills for idiomatic Babashka development. | Skills: [babashka](plugins/babashka/skills/babashka), [babashka-tasks](plugins/babashka/skills/babashka-tasks) |
-| [clojure](plugins/clojure/) | REPL-first Clojure development — general agent and skill for any dialect and runtime; pairs with clojure-editor for safe edit delegation. | Agent: [Clojure](plugins/clojure/agents/clojure.md) · Skill: [clojure](plugins/clojure/skills/clojure) |
-| [clojure-editor](plugins/clojure-editor/) | Subagent for editing Clojure files using Backseat Driver structural editing tools. | Agents: [Non-Clojure-Editor](plugins/clojure-editor/agents/non-clojure-editor.md), [Clojure-editor](plugins/clojure-editor/agents/clojure-editor.md) |
+| [clojure](plugins/clojure/) | REPL-first Clojure development — general agent and skill for any dialect and runtime; pairs with clojure-editor for safe edit delegation. | Agent: [clojure](plugins/clojure/agents/clojure.md) · Skill: [clojure](plugins/clojure/skills/clojure) |
+| [clojure-editor](plugins/clojure-editor/) | Subagent for editing Clojure files using Backseat Driver structural editing tools. | Agents: [non-clojure-editor](plugins/clojure-editor/agents/non-clojure-editor.md), [clojure-editor](plugins/clojure-editor/agents/clojure-editor.md) |
 | [epupp](plugins/epupp/) | Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser). | Skill: [epupp](plugins/epupp/skills/epupp) |
 | [squint](plugins/squint/) | Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects. | Skill: [squint](plugins/squint/skills/squint) |
 <!-- plugins-table-end -->
@@ -77,13 +79,36 @@ This repo will mature both in terms of its content and structure. Right now it i
 
 Development happens on the `next` branch. Releases merge `next` into `master` (fast-forward only).
 
+### Dual-manifest workflow
+
+Copilot manifests under `.github/plugin/` are the source of truth. Cursor manifests under `.cursor-plugin/` are **generated only** — never edit them by hand.
+
+```sh
+# after changing .github/plugin/ manifests or plugin content
+bb generate-cursor-plugins
+bb validate
+git add .github/plugin/ .cursor-plugin/
+```
+
+`bb validate` runs Copilot checks plus strict Cursor validation (JSON Schema, path resolution, frontmatter policy, and L4 drift detection against committed `.cursor-plugin/` files).
+
+Install the Cursor schema validator once:
+
+```sh
+npm install --prefix schemas/cursor
+```
+
+### Cursor
+
+Generated `.cursor-plugin/marketplace.json` and `plugins/*/.cursor-plugin/plugin.json` follow [Cursor’s plugin reference](https://cursor.com/docs/reference/plugins). Install or test from the same git repo URL as Copilot; Cursor reads the generated tree, not `.github/plugin/`.
+
 ### Validating plugins
 
 ```sh
 bb validate
 ```
 
-Checks that all `plugin.json` files are valid JSON with required fields, and that all referenced skill/agent paths exist.
+Checks Copilot and Cursor plugin structure: JSON Schema, required fields, referenced paths, frontmatter identifiers, and regeneration fidelity.
 
 ### Publishing a release
 
@@ -91,7 +116,7 @@ Checks that all `plugin.json` files are valid JSON with required fields, and tha
 bb publish
 ```
 
-This validates preconditions (on `next`, clean tree, ahead of `master`, changelog has unreleased entries), shows a summary, and on confirmation pushes a `[publish]` marker commit. The CI pipeline then validates plugins, updates the changelog and version, tags, creates a GitHub Release, and merges `next` into `master`.
+This runs `bb validate` first, then validates preconditions (on `next`, clean tree, ahead of `master`, changelog has unreleased entries), shows a summary, and on confirmation pushes a `[publish]` marker commit. CI validates again, runs `ci-release` (which regenerates both manifest trees), validates once more, commits Copilot and `.cursor-plugin/` artifacts, tags, creates a GitHub Release, and merges `next` into `master`.
 
 ## License 🍻🗽
 

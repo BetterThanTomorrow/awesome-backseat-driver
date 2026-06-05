@@ -18,6 +18,14 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Cursor schema validator
+        run: npm install --prefix schemas/cursor
+
       - name: Setup Babashka
         uses: turtlequeue/setup-babashka@v1.7.0
         with:
@@ -42,6 +50,9 @@ jobs:
       - name: Update changelog and version
         run: bb ci-release ${{ steps.version.outputs.version }}
 
+      - name: Validate plugins after release
+        run: bb validate
+
       - name: Extract release notes
         id: notes
         run: |
@@ -65,6 +76,7 @@ jobs:
         run: |
           git add CHANGELOG.md .github/plugin/marketplace.json README.md
           git add plugins/*/README.md plugins/*/.github/plugin/plugin.json
+          git add .cursor-plugin/marketplace.json plugins/*/.cursor-plugin/plugin.json
           git commit -m "Release v${{ steps.version.outputs.version }}"
 
       - name: Tag
@@ -91,6 +103,8 @@ jobs:
       - name: Bump to next dev version
         run: |
           bb bump-version ${{ steps.version.outputs.next_version }}
+          bb generate-cursor-plugins
           git add .github/plugin/marketplace.json
+          git add .cursor-plugin/marketplace.json plugins/*/.cursor-plugin/plugin.json
           git commit -m "Bump version to v${{ steps.version.outputs.next_version }}"
           git push origin next

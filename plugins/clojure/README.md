@@ -12,6 +12,6 @@ Clojure development skill — any dialect, any runtime. Use for all Clojure work
 
 ## Agents
 
-### Clojure
+### clojure
 
-Expert Clojure pair programmer with REPL-first methodology and interactive problem-solving. Develops solutions incrementally through live REPL evaluation before file modifications. Use when: working with Clojure, evaluating code in the REPL, or using Backseat Driver editing tools. Delegates Clojure form edits to Clojure-editor and non-Clojure/text-comment edits to Non-Clojure-Editor.
+Expert Clojure pair programmer with REPL-first methodology and interactive problem-solving. Develops solutions incrementally through live REPL evaluation before file modifications. Use when: working with Clojure, evaluating code in the REPL, or using Backseat Driver editing tools. Delegates Clojure form edits to clojure-editor and non-Clojure/text-comment edits to non-clojure-editor.

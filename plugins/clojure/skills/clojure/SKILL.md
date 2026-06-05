@@ -22,7 +22,7 @@ Before any file modification: read → test → develop in REPL → verify → a
     grouped))
 ```
 
-Delegate file edits to editing subagents when available: Clojure forms and new top-level line comments added together with a form → `Clojure-editor`; non-Clojure files and edits/removals of existing top-level Clojure line-comment blocks → `Non-Clojure-Editor`. Here, top-level means zero Clojure form depth, outside forms and strings.
+Delegate file edits to editing subagents when available: Clojure forms and new top-level line comments added together with a form → `clojure-editor`; non-Clojure files and edits/removals of existing top-level Clojure line-comment blocks → `non-clojure-editor`. Here, top-level means zero Clojure form depth, outside forms and strings.
 
 ## S3 — Coding Conventions
 
