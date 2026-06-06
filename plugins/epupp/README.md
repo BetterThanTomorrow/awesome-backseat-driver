@@ -2,7 +2,7 @@
 
 Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser).
 
-Version: 0.1.2
+Version: 0.1.3
 
 ## Skills
 

@@ -4,6 +4,8 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.15] - 2026-06-06
+
 - Add Cursor plugin manifests
 - Add flat Clojure edit delegation with subagent-only structural and non-Clojure editor workers.
 

@@ -8,5 +8,5 @@
   "name" : "babashka",
   "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
   "skills" : "./skills/",
-  "version" : "0.1.2"
+  "version" : "0.1.3"
 }

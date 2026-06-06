@@ -2,7 +2,7 @@
 
 Babashka scripting and bb.edn task skills for idiomatic Babashka development.
 
-Version: 0.1.2
+Version: 0.1.3
 
 ## Skills
 

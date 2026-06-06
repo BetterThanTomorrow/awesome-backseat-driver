@@ -9,5 +9,5 @@
   "name" : "clojure",
   "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
   "skills" : "./skills/",
-  "version" : "0.1.4"
+  "version" : "0.1.5"
 }

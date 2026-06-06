@@ -2,7 +2,7 @@
 
 Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects.
 
-Version: 0.1.1
+Version: 0.1.2
 
 ## Skills
 
