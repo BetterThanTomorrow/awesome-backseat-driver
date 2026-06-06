@@ -1,6 +1,7 @@
 ---
 description: 'Subagent for editing Clojure files using Backseat Driver structural editing tools. Takes an edit plan and carries it out with validation, error checking, and reporting. Use when: editing Clojure forms, adding forms with adjacent top-level line comments, applying structural edits, or creating new Clojure files.'
 tools: [vscode/memory, read, search, todo, betterthantomorrow.calva-backseat-driver/clojure-eval, betterthantomorrow.calva-backseat-driver/list-sessions, betterthantomorrow.calva-backseat-driver/clojure-symbol, betterthantomorrow.calva-backseat-driver/clojuredocs, betterthantomorrow.calva-backseat-driver/calva-output, betterthantomorrow.calva-backseat-driver/balance-brackets, betterthantomorrow.calva-backseat-driver/clojure-edit-files, betterthantomorrow.joyride/joyride-eval]
+readonly: true
 name: clojure-editor
 model: Auto (copilot)
 user-invocable: false
