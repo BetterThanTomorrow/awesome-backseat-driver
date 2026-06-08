@@ -22,7 +22,7 @@ Before any file modification: read → test → develop in REPL → verify → a
     grouped))
 ```
 
-Delegate file edits to editing subagents when available: Clojure forms and new top-level line comments added together with a form → `clojure-editor`; non-Clojure files and edits/removals of existing top-level Clojure line-comment blocks → `non-clojure-editor`. Here, top-level means zero Clojure form depth, outside forms and strings.
+Never edit Clojure forms with plain string/file-edit tools — non-structural edits corrupt bracket balance and indentation. Use structural editing (Backseat Driver's `clojure_edit_files`, parinfer-backed). When editing subagents are available, delegate: Clojure forms and new top-level line comments added together with a form → `clojure-editor`; non-Clojure files and edits/removals of existing top-level Clojure line-comment blocks → `non-clojure-editor`. Here, top-level means zero Clojure form depth, outside forms and strings.
 
 ## S3 — Coding Conventions
 

@@ -14,9 +14,9 @@
        (mapcat (fn [ref]
                  (let [ref (string/replace-first ref #"^\./" "")
                        path (str plugin-dir "/" ref)]
-                   (if (and (= key :agents) (fs/directory? path))
+                   (if (fs/directory? path)
                      (->> (fs/list-dir path)
-                          (filter #(string/ends-with? (str %) ".md"))
+                          (filter #(re-find #"\.(?:md|mdc|markdown)$" (str %)))
                           (map str))
                      [path]))))
        vec))

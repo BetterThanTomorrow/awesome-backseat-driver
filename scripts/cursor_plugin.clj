@@ -17,6 +17,13 @@
   "Manifest keys that Cursor expects as directory path strings, not Copilot-style ref arrays."
   #{:skills :agents :commands :rules})
 
+(def cursor-agent-suppressed-plugins
+  "Plugins whose Copilot agent must NOT surface as a Cursor subagent. In Cursor
+  the Copilot main-agent persona is delivered via a rule instead; the subagent
+  would only invite unwanted auto-delegation. Omitting the :agents key keeps the
+  agent out of the Cursor manifest."
+  #{"clojure"})
+
 (defn normalize-refs
   "Coerce plugin.json stringOrStringArray refs to a seq of path strings."
   [v]
@@ -51,16 +58,27 @@
 
 (defn copilot-plugin-json->cursor
   "Filters a Copilot plugin.json map to Cursor-allowed keys and rewrites
-  component refs to directory path strings (Cursor loader convention)."
-  [pj]
-  (let [base (into {} (filter (fn [[k _]] (allowed-plugin-keys k)) pj))]
-    (reduce
-      (fn [m k]
-        (if (seq (normalize-refs (get pj k)))
-          (assoc m k (cursor-dir-ref k))
-          (dissoc m k)))
-      base
-      component-dir-keys)))
+  component refs to directory path strings (Cursor loader convention).
+
+  Options:
+   :has-rules-dir?   inject a Cursor `rules` ref even when the Copilot manifest
+                     omits it — Copilot does not bundle rules, Cursor does
+   :suppress-agents? omit the `agents` key to keep the Copilot agent out of the
+                     Cursor manifest"
+  ([pj] (copilot-plugin-json->cursor pj {}))
+  ([pj {:keys [has-rules-dir? suppress-agents?]}]
+   (let [pj (cond-> pj
+              has-rules-dir? (assoc :rules ["./rules"]))
+         base (into {} (filter (fn [[k _]] (allowed-plugin-keys k)) pj))
+         refs-rewritten (reduce
+                          (fn [m k]
+                            (if (seq (normalize-refs (get pj k)))
+                              (assoc m k (cursor-dir-ref k))
+                              (dissoc m k)))
+                          base
+                          component-dir-keys)]
+     (cond-> refs-rewritten
+       suppress-agents? (dissoc :agents)))))
 
 (defn cursor-plugin-dir->entry
   "Builds a Cursor marketplace plugins[] entry (no version)."
@@ -86,7 +104,10 @@
   "Returns expected Cursor plugin.json map for a plugin directory."
   [plugin-dir]
   (let [pj (json/parse-string (slurp (str plugin-dir "/.github/plugin/plugin.json")) true)]
-    (copilot-plugin-json->cursor pj)))
+    (copilot-plugin-json->cursor
+      pj
+      {:has-rules-dir? (fs/directory? (str plugin-dir "/rules"))
+       :suppress-agents? (contains? cursor-agent-suppressed-plugins (:name pj))})))
 
 (defn expected-cursor-marketplace
   "Returns expected Cursor marketplace map from current Copilot sources."
