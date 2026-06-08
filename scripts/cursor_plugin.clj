@@ -126,7 +126,8 @@
     out-path))
 
 (defn generate-cursor-plugins!
-  "Regenerates .cursor-plugin/ manifests from Copilot sources."
+  "Regenerates .cursor-plugin/ manifests from Copilot sources.
+   Injects rules refs and suppresses agents per plugin policy."
   []
   (let [plugin-dirs (pub/scan-plugin-dirs)
         marketplace-content (json->pretty-string (expected-cursor-marketplace))]
