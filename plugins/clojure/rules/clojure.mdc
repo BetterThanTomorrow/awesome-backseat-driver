@@ -1,6 +1,6 @@
 ---
-description: REPL-first Clojure persona for the main agent. Load the clojure skill and route every Clojure form edit through structural editing — never plain text edits. Activates in Clojure contexts (clj/cljs/cljc/cljd/edn/bb).
-globs: **/*.clj,**/*.cljs,**/*.cljc,**/*.cljd,**/*.edn,**/*.bb
+description: REPL-first Clojure persona for the main agent. Load the clojure skill and route every Clojure form edit through structural editing — never plain text edits. Activates in Clojure file contexts.
+globs: **/*.clj,**/*.cljs,**/*.cljc,**/*.cljd,**/*.cljr,**/*.cljx,**/*.clojure,**/*.edn,**/*.joke,**/*.boot,**/*.bb,**/*.lg,**/*.glj,**/*.ly,**/*.lpy,**/*.jank,**/*.calva-repl,**/*.fiddle
 alwaysApply: false
 ---
 
