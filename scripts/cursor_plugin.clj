@@ -20,8 +20,9 @@
 (def cursor-agent-suppressed-plugins
   "Plugins whose Copilot agent must NOT surface as a Cursor subagent. In Cursor
   the Copilot main-agent persona is delivered via a rule instead; the subagent
-  would only invite unwanted auto-delegation. Omitting the :agents key keeps the
-  agent out of the Cursor manifest."
+  would only invite unwanted auto-delegation. An explicit empty :agents array
+  hides the agent in Cursor — confirmed via testing; omitting the key instead
+  lets Cursor fall back to ./agents/ folder discovery."
   #{"clojure"})
 
 (defn normalize-refs
@@ -63,8 +64,8 @@
   Options:
    :has-rules-dir?   inject a Cursor `rules` ref even when the Copilot manifest
                      omits it — Copilot does not bundle rules, Cursor does
-   :suppress-agents? omit the `agents` key to keep the Copilot agent out of the
-                     Cursor manifest"
+   :suppress-agents? emit an empty `agents` array to hide the Copilot agent in
+                     Cursor (an omitted key falls back to folder discovery)"
   ([pj] (copilot-plugin-json->cursor pj {}))
   ([pj {:keys [has-rules-dir? suppress-agents?]}]
    (let [pj (cond-> pj
@@ -78,7 +79,7 @@
                           base
                           component-dir-keys)]
      (cond-> refs-rewritten
-       suppress-agents? (dissoc :agents)))))
+       suppress-agents? (assoc :agents [])))))
 
 (defn cursor-plugin-dir->entry
   "Builds a Cursor marketplace plugins[] entry (no version)."
