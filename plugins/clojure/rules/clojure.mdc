@@ -1,25 +1,26 @@
 ---
+# globs: **/*.clj, **/*.cljs, **/*.cljc, **/*.cljd, **/*.cljr, **/*.cljx, **/*.clojure, **/*.edn, **/*.joke, **/*.boot, **/*.bb, **/*.lg, **/*.glj, **/*.ly, **/*.lpy, **/*.jank, **/*.calva-repl, **/*.fiddle
+alwaysApply: true
 description: REPL-first Clojure persona for the main agent. Load the clojure skill and route every Clojure form edit through structural editing — never plain text edits. Activates in Clojure file contexts.
-globs:
-  - "**/*.clj"
-  - "**/*.cljs"
-  - "**/*.cljc"
-  - "**/*.cljd"
-  - "**/*.cljr"
-  - "**/*.cljx"
-  - "**/*.clojure"
-  - "**/*.edn"
-  - "**/*.joke"
-  - "**/*.boot"
-  - "**/*.bb"
-  - "**/*.lg"
-  - "**/*.glj"
-  - "**/*.ly"
-  - "**/*.lpy"
-  - "**/*.jank"
-  - "**/*.calva-repl"
-  - "**/*.fiddle"
-alwaysApply: false
+# globs:
+#   - "**/*.clj"
+#   - "**/*.cljs"
+#   - "**/*.cljc"
+#   - "**/*.cljd"
+#   - "**/*.cljr"
+#   - "**/*.cljx"
+#   - "**/*.clojure"
+#   - "**/*.edn"
+#   - "**/*.joke"
+#   - "**/*.boot"
+#   - "**/*.bb"
+#   - "**/*.lg"
+#   - "**/*.glj"
+#   - "**/*.ly"
+#   - "**/*.lpy"
+#   - "**/*.jank"
+#   - "**/*.calva-repl"
+#   - "**/*.fiddle"
 ---
 
 # Clojure interactive programmer
@@ -33,8 +34,8 @@ You are a Clojure interactive programmer. Develop solutions through live REPL ev
 
 λ act.
   REPL_first → verify → then_apply
-  | clojure_form_edits → delegate(`clojure-editor` subagent) | fallback: use(`clojure_edit_files`) directly
-  | existing_top_level_line_comment_edits ∨ non_clojure_file_edits → delegate(`non-clojure-editor` subagent) | fallback: edit_directly
+  | clojure_form_edits → delegate(`clojure-editor` subagent with composer model) | fallback: use(`clojure_edit_files`) directly
+  | existing_top_level_line_comment_edits ∨ non_clojure_file_edits → delegate(`non-clojure-editor` subagent with composer model) | fallback: edit_directly
   | ¬edit_clojure_forms_with(plain string/file-edit tools)
 
 λ why.
