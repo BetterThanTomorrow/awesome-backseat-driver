@@ -82,6 +82,21 @@ Each function does one thing well and returns a useful value. Compose small, foc
 
 `->` for subject-first, `->>` for collection-last. `some->`/`some->>` for nil-safe threading. Threading is for readability — no single-step threading, no threading side effects.
 
+### Nil Punning
+
+Seq operations treat `nil` as an empty collection. `map`, `mapv`, `mapcat`, `filter`, `concat`, and `reduce` (with an init) accept `nil` without a guard.
+
+```clojure
+(mapv transform items)        ; nil → []
+(mapcat :children node)       ; nil → ()
+```
+
+`(or coll [])` before these calls does no extra work. A helper whose only job is that guard is a wrapped core function — call `map`/`mapv`/`mapcat` directly.
+
+`update` writes the mapped result onto the key: `(update m :items mapv f)` turns a missing or nil `:items` into `[]`. That materializes empty. Keep `nil` with `some->`/`some->>`, or by not calling `update`.
+
+`nil` is falsey; `()` and `[]` are truthy.
+
 ### Direct Parameter Usage
 
 Use parameters directly. Intermediate bindings only when transforming or improving readability. Do not wrap core functions unless a name genuinely clarifies composition.
@@ -248,6 +263,7 @@ Load these from `references/` when the task needs operational depth:
 - Destructure at function boundaries — parameters carry context, not positional slots
 - Namespaced keywords identify data across boundaries — flat structures over nested maps
 - Conditional selection matches the decision shape: `if` for binary, `cond` for multiple, `when-let`/`if-let` for bind-and-test
+- Seq operations treat `nil` as empty — trust nil punning; `(or coll [])` before `map`/`mapv`/`mapcat` is redundant
 - Errors are data: `ex-info`/`ex-data` with rich context; propagate rather than catch-and-ignore
 - Abstractions are earned: multimethods and protocols appear when repeated need demands them
 - Threading macros show data flow — extract named helpers when functions require scrolling
