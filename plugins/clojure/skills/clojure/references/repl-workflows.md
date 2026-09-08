@@ -2,6 +2,10 @@
 
 Concrete REPL-first workflow patterns for common development tasks. Each template follows the same cycle: understand current behavior → develop fix/feature in REPL → verify → apply to files.
 
+## Unable to resolve symbol
+
+Very often **wrong current namespace**, not a missing def. Eval ran in one ns while the name lives in another; or that file was never loaded into this REPL. `(in-ns 'owning.ns)` (or eval from the owning file / `require`+alias), then retry. Calva: watch the ns chip. Scittle nREPL / SCI: same shape (`:type :sci/error`, callstack ns).
+
 ## Bug Fix
 
 ```clojure
