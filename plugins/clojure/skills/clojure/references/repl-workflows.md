@@ -2,9 +2,11 @@
 
 Concrete REPL-first workflow patterns for common development tasks. Each template follows the same cycle: understand current behavior → develop fix/feature in REPL → verify → apply to files.
 
-## Unable to resolve symbol
+## Namespace you evaluate in
 
-Very often **wrong current namespace**, not a missing def. Eval ran in one ns while the name lives in another; or that file was never loaded into this REPL. `(in-ns 'owning.ns)` (or eval from the owning file / `require`+alias), then retry. Calva: watch the ns chip. Scittle nREPL / SCI: same shape (`:type :sci/error`, callstack ns).
+Paying attention to which namespace you evaluate in keeps REPL work efficient. Eval from the owning file, or `(in-ns 'owning.ns)` / `require`+alias; Calva: watch the ns chip; load the file into this REPL when it is not there yet.
+
+If `Unable to resolve symbol: …` shows up, that attention was skipped (wrong current ns, or never loaded) — usually not a missing def. Scittle nREPL / SCI: same shape (`:type :sci/error`, callstack ns).
 
 ## Bug Fix
 
