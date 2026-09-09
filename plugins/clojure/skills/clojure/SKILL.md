@@ -13,7 +13,7 @@ Data-oriented, REPL-first development for Clojure, ClojureScript, and Babashka. 
 
 ## S4 — REPL-First Development
 
-Pay attention to **which namespace you evaluate in** — efficiency depends on it. Eval from the owning file, or `(in-ns '…)` / `require`+alias into that ns; Calva: watch the ns chip; load the file into this REPL when it is not there yet. If `Unable to resolve symbol: …` shows up, that attention was skipped (wrong current ns, or never loaded) — usually not a missing def. Same shape on Scittle nREPL / SCI (`:type :sci/error`, callstack ns). Details: `references/repl-workflows.md`.
+**Habit:** pick the right namespace **before** you eval. Eval from the owning file, or `(in-ns '…)` / `require`+alias into that ns; Calva: watch the ns chip; load the file into this REPL when it is not there yet. `Unable to resolve symbol: …` is a sign that attention was skipped (wrong current ns, or never loaded) — usually not a missing def. Same shape on Scittle nREPL / SCI (`:type :sci/error`, callstack ns). Details: `references/repl-workflows.md`.
 
 Before any file modification: read → test → develop in REPL → verify → apply. Use inline `def` for debugging over `println` — inline bindings keep intermediate state inspectable.
 
