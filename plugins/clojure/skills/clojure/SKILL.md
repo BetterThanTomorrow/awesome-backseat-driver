@@ -26,6 +26,8 @@ Before any file modification: read → test → develop in REPL → verify → a
 
 Never edit Clojure forms with plain string/file-edit tools — non-structural edits corrupt bracket balance and indentation. Use structural editing (Backseat Driver's `clojure_edit_files`, parinfer-backed). When editing subagents are available, delegate: Clojure forms and new top-level line comments added together with a form → `clojure-editor`; non-Clojure files and edits/removals of existing top-level Clojure line-comment blocks → `non-clojure-editor`. Here, top-level means zero Clojure form depth, outside forms and strings.
 
+Feed stdin-reading functions with `with-in-str` or arguments — the connected REPL has no usable process stdin. Details: `references/runtime-patterns.md`.
+
 ## S3 — Coding Conventions
 
 ### Requiring and Aliasing
@@ -253,7 +255,7 @@ Load dialect references from `references/` for operational depth per dialect.
 Load these from `references/` when the task needs operational depth:
 
 - [repl-workflows.md](references/repl-workflows.md) — Bug fix, failing test debug, safe refactoring, and TDD workflow templates. Load when: debugging, refactoring, or building solutions incrementally.
-- [runtime-patterns.md](references/runtime-patterns.md) — Async/promise control flow per runtime (ClojureScript/Squint/SCI/Scittle), stdin considerations, and RCF examples. Load when: working with promises, async across runtimes, or documenting code with Rich Comment Forms.
+- [runtime-patterns.md](references/runtime-patterns.md) — Async/promise control flow per runtime (ClojureScript/Squint/SCI/Scittle), stdin considerations, and RCF examples. Load when: working with promises, async across runtimes, feeding stdin from the REPL, or documenting code with Rich Comment Forms.
 - [sci-dialect.md](references/sci-dialect.md) — REPL-verified SCI feature parity and differences vs Clojure. Covers Babashka, Scittle, Joyride, nbb, and other SCI-based environments. Load when: uncertain whether a Clojure feature works in SCI.
 - **Squint skill** — Full Squint development: compilation, REPL workflow, debugging, function availability, and core library gaps. Load when: writing Squint code or working with `squint.edn` projects.
 - [squint-dialect.md](references/squint-dialect.md) — Quick reference of essential Squint semantic differences. Covers the base when the Squint skill is not loaded. Points to the full Squint skill for operational depth.

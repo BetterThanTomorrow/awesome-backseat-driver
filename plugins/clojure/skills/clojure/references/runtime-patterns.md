@@ -55,9 +55,18 @@ Mark functions `^:async`, unwrap promises with `await` (bare — NOT `js-await`)
 
 ## Reading from stdin
 
-- Clojure `(read-line)` prompts the user through VS Code
-- Babashka nREPL lacks stdin support — avoid `read-line` there
-- Ask the user to restart the REPL if it blocks on stdin
+Feed stdin-reading functions from the REPL with `with-in-str`, or pass the data as an argument. A connected REPL (nREPL, Calva, Backseat Driver eval) has no usable process stdin. `read-line`, `slurp` of `*in*`, helpers that read `*in*`, and CLI `--args -` hang or time out. Babashka nREPL is the same. If the REPL is already blocked on stdin, ask the human to restart it.
+
+```clojure
+(defn greet []
+  (str "hello, " (read-line)))
+
+(with-in-str "Ada\n"
+  (greet))
+;; => "hello, Ada"
+```
+
+`with-in-str` rebinds `*in*`. TTY checks that look at `System/console` still see the process console, so test stdin through `*in*`, not the process TTY.
 
 ## Rich Comment Form Examples
 
