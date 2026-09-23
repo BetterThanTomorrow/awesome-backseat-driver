@@ -1,5 +1,13 @@
 # Contributing
 
+## Branch model
+
+`master` is the marketplace. Copilot and Cursor installs from the repo URL use that branch. Work happens on `next`.
+
+## Publishing
+
+The human publishes with `bb publish`. Agents do not push a release. Help maintain the Babashka publish task.
+
 ## Manifests
 
 - Edit **Copilot** manifests only: `.github/plugin/marketplace.json` and `plugins/*/.github/plugin/plugin.json`.
@@ -10,12 +18,7 @@ bb generate-cursor-plugins
 bb validate
 ```
 
-Commit both Copilot and generated Cursor paths together.
-
-## Publishing
-
-The human publishes. As an agent you help with maintaining the Babaska tasks, including `bb publish`.
-
+Commit both Copilot and generated Cursor paths together.The human publishes. As an agent you help with maintaining the Babashka tasks, including `bb publish`.
 ## Babashka development
 
 Use a Babashka REPL (`bb` session) and the `babashka` / `babashka-tasks` skills in this repo. Prove behavior in the REPL before editing files; use `bb` tasks as integration gates.

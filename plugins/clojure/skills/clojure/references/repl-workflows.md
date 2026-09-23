@@ -2,6 +2,12 @@
 
 Concrete REPL-first workflow patterns for common development tasks. Each template follows the same cycle: understand current behavior → develop fix/feature in REPL → verify → apply to files.
 
+## Pick the right namespace before you eval
+
+**Habit:** pick the right namespace before you eval. Eval from the owning file, or `(in-ns 'owning.ns)` / `require`+alias; Calva: watch the ns chip; load the file into this REPL when it is not there yet.
+
+`Unable to resolve symbol: …` is a sign that attention was skipped (wrong current ns, or never loaded) — usually not a missing def. Scittle nREPL / SCI: same shape (`:type :sci/error`, callstack ns).
+
 ## Bug Fix
 
 ```clojure
@@ -87,19 +93,16 @@ Concrete REPL-first workflow patterns for common development tasks. Each templat
 Iterate with real data before editing files:
 
 ```clojure
-(def sample-text "line 1\nline 2\nline 3\nline 4\nline 5")
+(defn pad-number [n width]
+  (let [s (str n)]
+    (str (apply str (repeat (- width (count s)) " "))
+         s)))
 
-(defn format-line-number [n padding marker-len]
-  (let [num-str (str n)
-        total-padding (- padding marker-len)]
-    (str (apply str (repeat (- total-padding (count num-str)) " "))
-         num-str)))
-
-(deftest line-number-formatting
-  (is (= "  5" (editor-util/format-line-number 5 3 0))
-      "Single digit with padding 3, no marker space")
-  (is (= " 42" (editor-util/format-line-number 42 3 0))
-      "Double digit with padding 3, no marker space"))
+(deftest pad-number-width
+  (is (= "  5" (pad-number 5 3))
+      "Single digit padded to width 3")
+  (is (= " 42" (pad-number 42 3))
+      "Double digit padded to width 3"))
 ```
 
 Benefits: verified behavior before committing, incremental development with immediate feedback, tests that capture known-good behavior, failing tests lock in intent before implementation.

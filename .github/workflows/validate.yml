@@ -2,9 +2,9 @@ name: Validate
 
 "on":
   pull_request:
-    branches: [next]
+    branches: [master]
   push:
-    branches: [next]
+    branches: [master]
 
 jobs:
   validate:
@@ -21,6 +21,9 @@ jobs:
 
       - name: Validate plugins
         run: bb validate
+
+      - name: Run script tests
+        run: bb test
 
       - name: Check Cursor manifest drift
         run: git diff --exit-code -- .cursor-plugin/

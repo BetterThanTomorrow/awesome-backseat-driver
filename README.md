@@ -14,7 +14,7 @@ The minimal starter-pack, IMO, is the **clojure** and **clojure-editor** plugins
 |---|---|---|
 | [babashka](plugins/babashka/) | Babashka scripting and bb.edn task skills for idiomatic Babashka development. | Skills: [babashka](plugins/babashka/skills/babashka), [babashka-tasks](plugins/babashka/skills/babashka-tasks) |
 | [clojure](plugins/clojure/) | REPL-first Clojure development — general agent and skill for any dialect and runtime; pairs with clojure-editor for safe edit delegation. | Agent: [clojure](plugins/clojure/agents/clojure.md) · Skill: [clojure](plugins/clojure/skills/clojure) |
-| [clojure-editor](plugins/clojure-editor/) | Subagent for editing Clojure files using Backseat Driver structural editing tools. | Agents: [clojure-editor](plugins/clojure-editor/agents/clojure-editor.md), [non-clojure-editor](plugins/clojure-editor/agents/non-clojure-editor.md) |
+| [clojure-editor](plugins/clojure-editor/) | Subagent for editing Clojure files using Backseat Driver structural editing tools. | Agents: [non-clojure-editor](plugins/clojure-editor/agents/non-clojure-editor.md), [clojure-editor](plugins/clojure-editor/agents/clojure-editor.md) |
 | [epupp](plugins/epupp/) | Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser). | Skill: [epupp](plugins/epupp/skills/epupp) |
 | [squint](plugins/squint/) | Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects. | Skill: [squint](plugins/squint/skills/squint) |
 <!-- plugins-table-end -->
@@ -29,61 +29,7 @@ Instructions can't be bundled in plugins — install them separately:
 
 ## Install
 
-Installation looks a bit different depending on platform. You can also copy the content of anything you want on your machine(s) from this repo and configure manually in VS Code or Cursor.
-
-### VS Code Copilot
-
-To install the Marketplace and e.g. the **clojure** plugin:
-
-1. Install/configure **Awesome Backseat Driver** as a provider of plugins:
-    1. From the VS Code command palette: **Chat: Install Plugin from Source**
-    1. Paste: https://github.com/BetterThanTomorrow/awesome-backseat-driver
-    1. Select **clojure**
-       ![Select Awesome Clojure Plugin](assets/howto/plugin-selector.png)
-1. You will also want to installing the **clojure-editor** plugin:
-    1. From the VS Code command palette: **Chat: Plugins**
-    1. Append plugin name in the search box, e.g. **clojure-editor**
-    1. Click **Install**
-
-Instructions and prompts have install buttons in the rendered markdown from this site. (I recommend consolidating all Copilot config to `~/.copilot/`, but that's me.)
-
-### Cursor
-
-From Cursor Settings -> Plugins paste the link to this repo (https://github.com/BetterThanTomorrow/awesome-backseat-driver) in the **Search or Paste Link** text input box. The plugins will be listed:
-
-![Install the Awesome Backset Driver Marketplace in Cursor](assets/howto/awesome-backseat-driver-cursor-install.png)
-
-Click a plugin and then click **Add to Cursor**. 
-
-Once installed, you can ask the agent to explain what a plugin brings, by clicking the **Try in Chat** button.
-
-![Try a plugin in Cursor](assets/howto/awesome-backseat-driver-cursor-try.png)
-
-## Relationship to Calva Backseat Driver
-
-The **Calva Backseat Driver extension** provides the foundational tooling layer of instructions so that the agent *can* and knows *how* to do REPL evaluation, structural editing, symbol lookup, etcetera. Install it from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=betterthantomorrow.calva-backseat-driver).
-
-This marketplace (as the Copilot team terms it) provides
-1. More optinonated instructions for the AI to produce high quality Clojure code and use the REPL effectively.
-2. More specific information around this or that Clojure dialect or runtime, or this or that library or framework / tool / etcetera.
-3. More opinionated instructions about the use of subagents, etecetera
-
-## VS Code Copilot Customization Docs
-
-To make sense of what the content of this repository offers, you may want to check out some of these resources:
-
-- [Overview](https://code.visualstudio.com/docs/copilot/customization/overview)
-| [Customization concepts](https://code.visualstudio.com/docs/copilot/concepts/customization)
-- [Custom instructions](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
-| [Prompt files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
-| [Custom agents](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
-| [Agent skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
-| [Agent plugins](https://code.visualstudio.com/docs/copilot/customization/agent-plugins)
-| [Troubleshooting](https://code.visualstudio.com/docs/copilot/troubleshooting)
-
-### Cursor Customization
-
-Start here: https://cursor.com/docs/plugins
+Installation looks a bit different depending on platform. But your agent will know what to do. Give it the repo url and tell it what you want to have installed.
 
 ## WIP
 

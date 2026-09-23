@@ -8,6 +8,10 @@ This is a VS Code Copilot plugin marketplace repo — pure content (markdown, JS
 - `plugins/<name>/` — individual plugins, each with `.github/plugin/plugin.json`
 - `instructions/` — standalone instruction files (not bundled in plugins)
 
+## Branch model
+
+`master` is the marketplace. Work happens on `next`.
+
 ## Changelog
 
 Maintain `CHANGELOG.md` using [Keep a Changelog](https://keepachangelog.com/) format. Only plugin-related changes get entries — new plugins, removed plugins, updated skills/agents, and changed instructions. Infrastructure changes (CI, scripts, README generation) do not belong in the changelog.
@@ -26,4 +30,4 @@ Commit regularly with succinct and clear messages.
 
 ## Publishing
 
-Only humans publish. Instruct the human to run `bb publish` to trigger a release. Requires: on `next` branch, clean tree, ahead of `master`, and at least one unreleased changelog entry.
+The human pushes and publishes. Agents do not.

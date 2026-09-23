@@ -4,6 +4,10 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.16] - 2026-09-23
+
+- Add more progressively disclosed use cases for Clojure skill.
+
 ## [1.0.15] - 2026-06-06
 
 - Add Cursor plugin manifests

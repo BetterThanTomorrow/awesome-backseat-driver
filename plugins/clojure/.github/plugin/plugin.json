@@ -8,6 +8,6 @@
     "name" : "BetterThanTomorrow"
   },
   "skills" : [ "./skills/clojure" ],
-  "version" : "0.1.5",
+  "version" : "0.1.6",
   "agents" : [ "./agents" ]
 }

@@ -13,16 +13,20 @@ Data-oriented, REPL-first development for Clojure, ClojureScript, and Babashka. 
 
 ## S4 — REPL-First Development
 
+**Habit:** pick the right namespace **before** you eval. Eval from the owning file, or `(in-ns '…)` / `require`+alias into that ns; Calva: watch the ns chip; load the file into this REPL when it is not there yet. `Unable to resolve symbol: …` is a sign that attention was skipped (wrong current ns, or never loaded) — usually not a missing def. Same shape on Scittle nREPL / SCI (`:type :sci/error`, callstack ns). Details: `references/repl-workflows.md`.
+
 Before any file modification: read → test → develop in REPL → verify → apply. Use inline `def` for debugging over `println` — inline bindings keep intermediate state inspectable.
 
 ```clojure
-(defn process-instructions [instructions]
-  (def instructions instructions)
-  (let [grouped (group-by :status instructions)]
+(defn group-by-status [items]
+  (def items items)
+  (let [grouped (group-by :status items)]
     grouped))
 ```
 
-Delegate file edits to editing subagents when available: Clojure forms and new top-level line comments added together with a form → `clojure-editor`; non-Clojure files and edits/removals of existing top-level Clojure line-comment blocks → `non-clojure-editor`. Here, top-level means zero Clojure form depth, outside forms and strings.
+Never edit Clojure forms with plain string/file-edit tools — non-structural edits corrupt bracket balance and indentation. Use structural editing (Backseat Driver's `clojure_edit_files`, parinfer-backed). When editing subagents are available, delegate: Clojure forms and new top-level line comments added together with a form → `clojure-editor`; non-Clojure files and edits/removals of existing top-level Clojure line-comment blocks → `non-clojure-editor`. Here, top-level means zero Clojure form depth, outside forms and strings.
+
+Feed stdin-reading functions with `with-in-str` or arguments — the connected REPL has no usable process stdin. Details: `references/runtime-patterns.md`.
 
 ## S3 — Coding Conventions
 
@@ -35,9 +39,8 @@ Prefer aliasing over referring, except for common test macros. Alias `clojure.st
 Immediately after function name, before argument vector. State responsibility first.
 
 ```clojure
-(defn append-memory-section
-  "Appends a new memory section to the specified file.
-   Ensures consistent spacing for readability."
+(defn append-section
+  "Appends a section to the specified file."
   [file-path section]
   ;; implementation
   )
@@ -81,6 +84,21 @@ Each function does one thing well and returns a useful value. Compose small, foc
 ### Threading
 
 `->` for subject-first, `->>` for collection-last. `some->`/`some->>` for nil-safe threading. Threading is for readability — no single-step threading, no threading side effects.
+
+### Nil Punning
+
+Seq operations treat `nil` as an empty collection. `map`, `mapv`, `mapcat`, `filter`, `concat`, and `reduce` (with an init) accept `nil` without a guard.
+
+```clojure
+(mapv transform items)        ; nil → []
+(mapcat :children node)       ; nil → ()
+```
+
+`(or coll [])` before these calls does no extra work. A helper whose only job is that guard is a wrapped core function — call `map`/`mapv`/`mapcat` directly.
+
+`update` writes the mapped result onto the key: `(update m :items mapv f)` turns a missing or nil `:items` into `[]`. That materializes empty. Keep `nil` with `some->`/`some->>`, or by not calling `update`.
+
+`nil` is falsey; `()` and `[]` are truthy.
 
 ### Direct Parameter Usage
 
@@ -236,7 +254,7 @@ Load dialect references from `references/` for operational depth per dialect.
 Load these from `references/` when the task needs operational depth:
 
 - [repl-workflows.md](references/repl-workflows.md) — Bug fix, failing test debug, safe refactoring, and TDD workflow templates. Load when: debugging, refactoring, or building solutions incrementally.
-- [runtime-patterns.md](references/runtime-patterns.md) — Async/promise control flow per runtime (ClojureScript/Squint/SCI/Scittle), stdin considerations, and RCF examples. Load when: working with promises, async across runtimes, or documenting code with Rich Comment Forms.
+- [runtime-patterns.md](references/runtime-patterns.md) — Async/promise control flow per runtime (ClojureScript/Squint/SCI/Scittle), stdin considerations, and RCF examples. Load when: working with promises, async across runtimes, feeding stdin from the REPL, or documenting code with Rich Comment Forms.
 - [sci-dialect.md](references/sci-dialect.md) — REPL-verified SCI feature parity and differences vs Clojure. Covers Babashka, Scittle, Joyride, nbb, and other SCI-based environments. Load when: uncertain whether a Clojure feature works in SCI.
 - **Squint skill** — Full Squint development: compilation, REPL workflow, debugging, function availability, and core library gaps. Load when: writing Squint code or working with `squint.edn` projects.
 - [squint-dialect.md](references/squint-dialect.md) — Quick reference of essential Squint semantic differences. Covers the base when the Squint skill is not loaded. Points to the full Squint skill for operational depth.
@@ -248,6 +266,7 @@ Load these from `references/` when the task needs operational depth:
 - Destructure at function boundaries — parameters carry context, not positional slots
 - Namespaced keywords identify data across boundaries — flat structures over nested maps
 - Conditional selection matches the decision shape: `if` for binary, `cond` for multiple, `when-let`/`if-let` for bind-and-test
+- Seq operations treat `nil` as empty — trust nil punning; `(or coll [])` before `map`/`mapv`/`mapcat` is redundant
 - Errors are data: `ex-info`/`ex-data` with rich context; propagate rather than catch-and-ignore
 - Abstractions are earned: multimethods and protocols appear when repeated need demands them
 - Threading macros show data flow — extract named helpers when functions require scrolling

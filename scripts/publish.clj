@@ -76,6 +76,28 @@
                          (when after [""])
                          after))))
 
+(defn changelog-notes
+  "Returns the body of a versioned changelog section."
+  [changelog-content version]
+  (let [lines (string/split-lines changelog-content)
+        heading (str "## [" version "]")
+        start (->> lines
+                   (map-indexed vector)
+                   (some (fn [[i l]]
+                           (when (string/starts-with? l heading) i))))
+        end (when start
+              (->> lines
+                   (map-indexed vector)
+                   (drop (inc start))
+                   (some (fn [[i l]]
+                           (when (re-matches #"##[# ].*" l) i)))))]
+    (when start
+      (->> lines
+           (drop (inc start))
+           (take (- (or end (count lines)) start 1))
+           (string/join "\n")
+           string/trim))))
+
 (defn update-marketplace-version
   "Returns new marketplace.json content with updated version."
   [content version]
@@ -98,11 +120,45 @@
       string/trim
       string/blank?))
 
-(defn git-fast-forwardable?
-  "Checks if origin/master is an ancestor of HEAD."
+(defn git-has-remote?
+  "Returns true when the named remote exists."
+  [remote]
+  (let [remotes (-> (p/shell {:out :string} "git" "remote")
+                    :out
+                    string/split-lines
+                    set)]
+    (contains? remotes remote)))
+
+(def public-remote "public")
+
+(def public-repo "BetterThanTomorrow/awesome-backseat-driver")
+
+(defn git-rev-parse
+  "Returns the trimmed git rev-parse of ref."
+  [ref]
+  (-> (p/shell {:out :string} "git" "rev-parse" ref)
+      :out
+      string/trim))
+
+(defn git-commit-tree!
+  "Creates a commit with tree and parent. Returns the new sha."
+  [tree parent message]
+  (-> (p/shell {:out :string} "git" "commit-tree" tree "-p" parent "-m" message)
+      :out
+      string/trim))
+
+(defn git-commit-all!
+  "Stages all changes and commits with message."
+  [message]
+  (p/shell "git" "add" "-A")
+  (p/shell "git" "commit" "-m" message))
+
+(defn git-public-master-ancestor?
+  "Returns true when public/master is an ancestor of HEAD."
   []
   (try
-    (p/shell {:out :string :err :string} "git" "merge-base" "--is-ancestor" "origin/master" "HEAD")
+    (p/shell {:out :string :err :string} "git" "fetch" "public")
+    (p/shell {:out :string :err :string} "git" "merge-base" "--is-ancestor" "public/master" "HEAD")
     true
     (catch Exception _
       false)))
@@ -111,51 +167,38 @@
 ;; Publish (local)
 ;; ============================================================
 
-(defn publish!
-  "Validates preconditions and pushes a [publish] marker commit."
-  [{:keys [dry-run]}]
-  ((requiring-resolve 'validate/validate!))
-  (let [branch (git-current-branch)
-        clean? (git-clean?)
-        ff? (git-fast-forwardable?)
-        changelog (slurp "CHANGELOG.md")
-        unreleased (parse-unreleased changelog)
-        current-version (read-marketplace-version)
-        release-version current-version
-        errors (cond-> []
-                 (not= branch "next")
-                 (conj (str "Must be on 'next' branch (currently on '" branch "')"))
-                 (not clean?)
-                 (conj "Working directory is not clean")
-                 (not ff?)
-                 (conj "Branch 'next' is not fast-forwardable onto 'master'")
-                 (empty? unreleased)
-                 (conj "No unreleased entries in CHANGELOG.md"))]
-    (if (seq errors)
-      (do
-        (println "Publish blocked:")
-        (doseq [e errors]
-          (println (str "  - " e)))
-        (System/exit 1))
-      (do
-        (println "Ready to publish:")
-        (println (str "  Release version: " release-version))
-        (println (str "  Unreleased entries:"))
-        (doseq [entry unreleased]
-          (println (str "    " entry)))
-        (println)
-        (if dry-run
-          (println (str "[dry-run] Would create empty commit '[publish] v" release-version "' and push next"))
-          (do
-            (print "Proceed? [y/N] ")
-            (flush)
-            (let [answer (string/trim (read-line))]
-              (if (= (string/lower-case answer) "y")
-                (do
-                  (p/shell "git" "commit" "--allow-empty" "-m" (str "[publish] v" release-version))
-                  (p/shell "git" "push" "origin" "next")
-                  (println (str "Pushed [publish] v" release-version " to next.")))
-                (println "Aborted.")))))))))
+(defn collect-publish-errors
+  "Returns precondition error strings for a local publish."
+  [{:keys [branch clean? has-public? public-master-in-history? unreleased]}]
+  (cond-> []
+    (not= branch "next")
+    (conj (str "Must be on 'next' branch (currently on '" branch "')"))
+    (not clean?)
+    (conj "Working directory is not clean")
+    (not has-public?)
+    (conj "Missing 'public' git remote (BetterThanTomorrow/awesome-backseat-driver)")
+    (not public-master-in-history?)
+    (conj "public/master is not in this branch's history; merge it before publishing")
+    (empty? unreleased)
+    (conj "No unreleased entries in CHANGELOG.md")))
+
+(defn print-publish-plan
+  "Prints the publish summary the human confirms."
+  [version next-version unreleased]
+  (println "Ready to publish:")
+  (println (str "  Release version: " version))
+  (println (str "  Then private next bumps to: " next-version))
+  (println "  Unreleased entries:")
+  (doseq [entry unreleased]
+    (println (str "    " entry)))
+  (println "  Promote current tree onto public master."))
+
+(defn confirm-publish?
+  "Returns true when the human types y."
+  []
+  (print "Proceed? [y/N] ")
+  (flush)
+  (= "y" (string/lower-case (string/trim (read-line)))))
 
 ;; ============================================================
 ;; CI release
@@ -321,3 +364,69 @@
       (do
         (spit "README.md" updated)
         (println "README.md plugins table updated.")))))
+
+(defn prepare-release-files!
+  "Writes changelog, plugin versions, and generated marketplace files for version."
+  [version]
+  ((requiring-resolve 'bump-versions/bump-versions!) {})
+  ((requiring-resolve 'bump-versions/generate-readmes!))
+  (ci-release! version)
+  (generate-marketplace-plugins!)
+  ((requiring-resolve 'cursor-plugin/generate-cursor-plugins!))
+  (update-readme!))
+
+(defn publish-release!
+  "Promotes the current tree to public master and bumps private next."
+  [version next-version]
+  (p/shell "git" "fetch" public-remote)
+  (prepare-release-files! version)
+  (git-commit-all! (str "Release v" version))
+  (let [parent (git-rev-parse (str public-remote "/master"))
+        tree (git-rev-parse "HEAD^{tree}")
+        sha (git-commit-tree! tree parent (str "[publish] v" version))
+        notes (or (changelog-notes (slurp "CHANGELOG.md") version) "")]
+    (p/shell "git" "push" public-remote (str sha ":refs/heads/master"))
+    (p/shell "git" "tag" (str "v" version) sha)
+    (p/shell "git" "push" public-remote (str "v" version))
+    (p/shell "gh" "release" "create" (str "v" version)
+             "--repo" public-repo
+             "--title" (str "v" version)
+             "--notes" notes)
+    (p/shell "git" "merge" sha "-m" (str "Merge public release v" version))
+    (bump-version! next-version)
+    ((requiring-resolve 'cursor-plugin/generate-cursor-plugins!))
+    (git-commit-all! (str "Bump version to v" next-version))
+    (p/shell "git" "push" "origin" "next")
+    (println (str "Published v" version " to public master. Private next is v" next-version "."))
+    sha))
+
+(defn publish!
+  "Validates preconditions and promotes the tree to public master."
+  [{:keys [dry-run]}]
+  ((requiring-resolve 'validate/validate!))
+  (let [branch (git-current-branch)
+        clean? (git-clean?)
+        public-master-in-history? (git-public-master-ancestor?)
+        changelog (slurp "CHANGELOG.md")
+        unreleased (parse-unreleased changelog)
+        version (read-marketplace-version)
+        next-version (bump-patch version)
+        errors (collect-publish-errors
+                {:branch branch
+                 :clean? clean?
+                 :has-public? (git-has-remote? public-remote)
+                 :public-master-in-history? public-master-in-history?
+                 :unreleased unreleased})]
+    (if (seq errors)
+      (do
+        (println "Publish blocked:")
+        (doseq [e errors]
+          (println (str "  - " e)))
+        (System/exit 1))
+      (if dry-run
+        (do
+          (print-publish-plan version next-version unreleased)
+          (println "[dry-run] Would promote tree to public master, tag, create GitHub release, merge back, bump private next, and push origin."))
+        (if (confirm-publish?)
+          (publish-release! version next-version)
+          (println "Aborted."))))))

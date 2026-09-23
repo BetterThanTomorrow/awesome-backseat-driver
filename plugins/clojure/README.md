@@ -2,7 +2,7 @@
 
 REPL-first Clojure development — general agent and skill for any dialect and runtime; pairs with clojure-editor for safe edit delegation.
 
-Version: 0.1.5
+Version: 0.1.6
 
 ## Skills
 

@@ -1,4 +1,4 @@
-{:paths ["scripts"]
+{:paths ["scripts" "test"]
  :tasks
  {:requires ([validate]
              [publish]
@@ -8,13 +8,18 @@
   validate {:doc "Validate plugin structure (Copilot + Cursor paths, frontmatter, L4 drift)"
             :task (validate/validate!)}
 
+  test {:doc "Run publish unit tests"
+        :task (do (require 'publish-test :reload)
+                  (let [{:keys [fail error]} (clojure.test/run-tests 'publish-test)]
+                    (System/exit (if (zero? (+ fail error)) 0 1))))}
+
   generate-cursor-plugins {:doc "Generate .cursor-plugin/ manifests from Copilot sources"
                            :task (cursor-plugin/generate-cursor-plugins!)}
 
-  publish {:doc "Validate and push a [publish] marker commit to trigger CI release"
+  publish {:doc "Promote the current tree to public master and bump private next"
            :task (publish/publish! {:dry-run (some #{"--dry-run"} *command-line-args*)})}
 
-  ci-release {:doc "CI-only: update changelog, version, and README for a release"
+  ci-release {:doc "Write changelog, versions, and generated marketplace files for a release"
               :task (let [version (first *command-line-args*)]
                       (when-not version
                         (println "Usage: bb ci-release <version>")
@@ -31,7 +36,7 @@
                            (cursor-plugin/generate-cursor-plugins!)
                            (publish/update-readme!))}
 
-  bump-version {:doc "CI-only: bump marketplace version without changelog changes"
+  bump-version {:doc "Bump marketplace version without changelog changes"
                 :task (let [version (first *command-line-args*)]
                         (when-not version
                           (println "Usage: bb bump-version <version>")
