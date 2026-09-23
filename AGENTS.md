@@ -1,5 +1,9 @@
 # Contributing
 
+## Branch model
+
+`master` is the marketplace. Copilot and Cursor installs from this repo URL use the default branch (`master`). `next` is a public branch, but represents the development version of the marketplace. Work happens on `next`. Releases fast-forward `next` into `master`.
+
 ## Manifests
 
 - Edit **Copilot** manifests only: `.github/plugin/marketplace.json` and `plugins/*/.github/plugin/plugin.json`.

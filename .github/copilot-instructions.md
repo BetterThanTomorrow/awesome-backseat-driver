@@ -8,6 +8,10 @@ This is a VS Code Copilot plugin marketplace repo — pure content (markdown, JS
 - `plugins/<name>/` — individual plugins, each with `.github/plugin/plugin.json`
 - `instructions/` — standalone instruction files (not bundled in plugins)
 
+## Branch model
+
+`master` is the marketplace. Copilot and Cursor installs from this repo URL use the default branch (`master`). `next` is a public branch, but represents the development version of the marketplace. Work happens on `next`. Releases fast-forward `next` into `master`.
+
 ## Changelog
 
 Maintain `CHANGELOG.md` using [Keep a Changelog](https://keepachangelog.com/) format. Only plugin-related changes get entries — new plugins, removed plugins, updated skills/agents, and changed instructions. Infrastructure changes (CI, scripts, README generation) do not belong in the changelog.
