@@ -4,6 +4,10 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.17] - 2026-09-25
+
+- Update the Epupp skill to match current functionality
+
 ## [1.0.16] - 2026-09-23
 
 - Add more progressively disclosed use cases for Clojure skill.

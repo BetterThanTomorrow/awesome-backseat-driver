@@ -2,7 +2,7 @@
   "name" : "awesome-backseat-driver",
   "metadata" : {
     "description" : "Clojure AI context plugins for GitHub Copilot — agents, skills, and workflows for REPL-first interactive programming with Calva Backseat Driver.",
-    "version" : "1.0.16",
+    "version" : "1.0.17",
     "pluginRoot" : "./plugins"
   },
   "owner" : {
@@ -27,7 +27,7 @@
     "name" : "epupp",
     "source" : "epupp",
     "description" : "Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser).",
-    "version" : "0.1.3"
+    "version" : "0.1.4"
   }, {
     "name" : "squint",
     "source" : "squint",
