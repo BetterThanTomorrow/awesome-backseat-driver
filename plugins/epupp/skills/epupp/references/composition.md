@@ -87,9 +87,15 @@ On a GitHub gist page or a GitHub repo file page, a code block that declares `:e
 `epupp.repl` is present when the REPL is connected. No inject needed for the namespace itself.
 
 ```clojure
-(epupp.repl/manifest! {:epupp/inject ["scittle://pprint.js"
-                                      "epupp://utils/dom.cljs"]})
-(require '[cljs.pprint :as pprint])
+(await (epupp.repl/manifest! {:epupp/inject ["scittle://pprint.js"
+                                             "epupp://utils/dom.cljs"]}))
 ```
 
-Calling `manifest!` again with the same set is safe. In a headquarters workspace, the Calva **Manifest** command evaluates `manifest!` on the manifest form under the cursor.
+`manifest!` returns a promise that resolves to `true`. The namespace exists after that await. Require it in a following evaluation, then use it:
+
+```clojure
+(require '[cljs.pprint :as pprint])
+(with-out-str (pprint/pprint {:a 1}))
+```
+
+One evaluation that calls `manifest!` and then `require`s the new namespace fails with "Could not find namespace", because `require` runs before the inject finishes. A single `defn` that both awaits `manifest!` and names the new alias fails earlier, at analysis, with "Unable to resolve symbol". Calling `manifest!` again with the same set resolves to `true`. In a headquarters workspace, the Calva **Manifest** command evaluates `manifest!` on the manifest form under the cursor.

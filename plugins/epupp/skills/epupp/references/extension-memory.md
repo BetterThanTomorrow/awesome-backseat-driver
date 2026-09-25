@@ -15,7 +15,7 @@ Every `epupp.fs` operation needs both an active REPL on this tab and **Allow REP
 
 While sync is on, code in that page can list, read, write, and delete userscripts. That includes page scripts and other extensions. Ask before the first write. If a write throws, ask the person to enable sync. Do not look for another door.
 
-`ls` returns `[]` when the call does not succeed, so an empty list can mean "sync is off" as well as "no scripts". A failed `save!` throws. Trust the throw, and ask.
+`ls` returns `[]` when the call does not succeed, so an empty list can mean "sync is off" as well as "no scripts". `show` returns nil in that same case, including for a built-in that is certainly installed. A nil `show` does not mean the script is absent. A failed `save!` throws `FS Sync requires an active REPL connection and FS Sync enabled in settings`. Trust the throw, and ask.
 
 All operations are `^:async`. `await` them. `save!`, `mv!`, and `rm!` throw on failure. Success maps use `:fs/*` keys.
 

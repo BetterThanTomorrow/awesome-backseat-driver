@@ -4,6 +4,10 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.18] - 2026-09-25
+
+- REPL verify -> epupp skill fixes
+
 ## [1.0.17] - 2026-09-25
 
 - Update the Epupp skill to match current functionality

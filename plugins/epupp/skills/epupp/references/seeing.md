@@ -17,7 +17,9 @@ You see the page through return values. `prn` and `println` may never reach the 
 (await (tools/capture-element (js/document.querySelector ".card") :quality 90))
 ```
 
-Keyword arguments and a single options map both work. `:format` is `"jpeg"` (default) or `"png"`. `:quality` is 0-100, default 75.
+Keyword arguments and a single options map both work: `(capture-visible :format "jpeg" :quality 40)` and `(capture-visible {:format "jpeg" :quality 40})`. `:format` is `"jpeg"` (default) or `"png"`. `:quality` is 0-100, default 75.
+
+A burst of captures can come back `{:success false :error "Capture failed: This request exceeds the MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND quota."}`. That is Chrome refusing the call. Wait, then try once.
 
 JPEG is small enough to return through the nREPL socket, including a viewport capture. PNG is much larger and can kill the WebSocket if you return the whole data URL. For PNG, `def` the result and check `(count (:dataUrl result))` before evaluating an expression that yields the URL itself.
 

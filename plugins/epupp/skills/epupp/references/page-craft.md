@@ -11,7 +11,7 @@ Load when changing the DOM, choosing a UI library, fetching, or writing to the c
 (.-length (js/document.querySelectorAll "h2"))
 ```
 
-A NodeList is seqable: `map`, `filter`, and `mapv` work. `count` does not. Use `.-length`.
+A NodeList is seqable: `map`, `filter`, and `mapv` work. `count` throws `No protocol method ICounted.-count defined`. Use `.-length`.
 
 Prefer a pure function of the data you just read. Apply it to the DOM at the edge.
 
@@ -59,7 +59,7 @@ Replicant event maps use `:on`. Re-render from a function you call after the ato
     (js->clj data :keywordize-keys true)))
 ```
 
-`^:async` returns a Promise. `await` works in `let`, `do`, `if` / `when` / `cond`, `loop` / `recur`, `try` / `catch`, `case`, and threading macros. There is no top-level `await`. Parallel work is `js/Promise.all`. Catch with `catch :default`.
+`^:async` returns a Promise. `await` works in `let`, `do`, `if` / `when` / `cond`, `loop` / `recur`, `try` / `catch`, `case`, and threading macros. A bare `(await …)` in the REPL fails with `Unable to resolve symbol: await`. Parallel work is `js/Promise.all`. Catch with `catch :default`.
 
 ## Clipboard
 
