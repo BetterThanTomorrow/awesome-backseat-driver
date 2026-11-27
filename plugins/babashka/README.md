@@ -2,7 +2,13 @@
 
 Babashka scripting and bb.edn task skills for idiomatic Babashka development.
 
-Version: 0.1.3
+Version: 0.1.4
+
+## Install in Claude Code
+
+```
+/plugin install babashka --marketplace BetterThanTomorrow/awesome-backseat-driver
+```
 
 ## Skills
 

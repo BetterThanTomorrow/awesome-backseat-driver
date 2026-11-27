@@ -1,6 +1,7 @@
 (ns validate
   (:require [babashka.fs :as fs]
             [cheshire.core :as json]
+            [validate-claude :as validate-claude]
             [validate-cursor :as validate-cursor]))
 
 (def required-plugin-fields [:name :version :description])
@@ -65,16 +66,17 @@
   (validate-copilot-marketplace))
 
 (defn validate!
-  "Validates Copilot and Cursor plugin structure. Prints results and exits."
+  "Validates Copilot, Cursor, and Claude Code plugin structure. Prints results and exits."
   []
   (println "Validating plugin structure...")
   (let [copilot-errors (validate-copilot!)
         cursor-errors (validate-cursor/validate-cursor!)
-        errors (into [] (concat copilot-errors cursor-errors))]
+        claude-errors (validate-claude/validate-claude!)
+        errors (into [] (concat copilot-errors cursor-errors claude-errors))]
     (if (seq errors)
       (do
         (doseq [e errors]
           (println (str "  ERROR: " e)))
         (println (str "\nValidation failed with " (count errors) " error(s)."))
         (System/exit 1))
-      (println "  All plugins valid (Copilot + Cursor)."))))
+      (println "  All plugins valid (Copilot + Cursor + Claude Code)."))))

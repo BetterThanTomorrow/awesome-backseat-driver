@@ -3,18 +3,22 @@
  {:requires ([validate]
              [publish]
              [bump-versions]
-             [cursor-plugin])
+             [cursor-plugin]
+             [claude-plugin])
 
-  validate {:doc "Validate plugin structure (Copilot + Cursor paths, frontmatter, L4 drift)"
+  validate {:doc "Validate plugin structure (Copilot + Cursor + Claude Code paths, frontmatter, L4 drift)"
             :task (validate/validate!)}
 
-  test {:doc "Run publish unit tests"
-        :task (do (require 'publish-test :reload)
-                  (let [{:keys [fail error]} (clojure.test/run-tests 'publish-test)]
+  test {:doc "Run script unit tests"
+        :task (do (require 'publish-test 'claude-plugin-test :reload)
+                  (let [{:keys [fail error]} (clojure.test/run-tests 'publish-test 'claude-plugin-test)]
                     (System/exit (if (zero? (+ fail error)) 0 1))))}
 
   generate-cursor-plugins {:doc "Generate .cursor-plugin/ manifests from Copilot sources"
                            :task (cursor-plugin/generate-cursor-plugins!)}
+
+  generate-claude-plugins {:doc "Generate .claude-plugin/ manifests and claude-agents/ from Copilot sources"
+                           :task (claude-plugin/generate-claude-plugins!)}
 
   publish {:doc "Promote the current tree to public master and bump private next"
            :task (publish/publish! {:dry-run (some #{"--dry-run"} *command-line-args*)})}
@@ -29,11 +33,13 @@
                       (publish/ci-release! version)
                       (publish/generate-marketplace-plugins!)
                       (cursor-plugin/generate-cursor-plugins!)
+                      (claude-plugin/generate-claude-plugins!)
                       (publish/update-readme!))}
 
-  update-readme {:doc "Regenerate marketplace.json plugins, Cursor manifests, and README.md table"
+  update-readme {:doc "Regenerate marketplace.json plugins, Cursor and Claude Code manifests, and README.md table"
                  :task (do (publish/generate-marketplace-plugins!)
                            (cursor-plugin/generate-cursor-plugins!)
+                           (claude-plugin/generate-claude-plugins!)
                            (publish/update-readme!))}
 
   bump-version {:doc "Bump marketplace version without changelog changes"

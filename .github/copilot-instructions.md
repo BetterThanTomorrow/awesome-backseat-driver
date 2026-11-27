@@ -2,7 +2,7 @@
 
 ## Project Structure
 
-This is a VS Code Copilot plugin marketplace repo — pure content (markdown, JSON, PNG). No build step.
+This is a VS Code Copilot plugin marketplace repo — pure content (markdown, JSON, PNG). No build step. The Cursor and Claude Code marketplaces are generated from the Copilot sources (see `AGENTS.md`).
 
 - `.github/plugin/marketplace.json` — plugin registry, version source of truth
 - `plugins/<name>/` — individual plugins, each with `.github/plugin/plugin.json`

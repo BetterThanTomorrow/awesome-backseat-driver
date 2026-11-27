@@ -2,7 +2,13 @@
 
 Subagent for editing Clojure files using Backseat Driver structural editing tools.
 
-Version: 0.1.9
+Version: 0.1.10
+
+## Install in Claude Code
+
+```
+/plugin install clojure-editor --marketplace BetterThanTomorrow/awesome-backseat-driver
+```
 
 ## Agents
 

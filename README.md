@@ -1,6 +1,6 @@
 # Awesome Backseat Driver [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-*Plugin marketplace for Clojure AI context in VS Code Copilot and Cursor*: agents, skills, and workflows for REPL-first interactive programming with [Calva Backseat Driver](https://github.com/BetterThanTomorrow/calva-backseat-driver).
+*Plugin marketplace for Clojure AI context in VS Code Copilot, Cursor, and Claude Code*: agents, skills, and workflows for REPL-first interactive programming with [Calva Backseat Driver](https://github.com/BetterThanTomorrow/calva-backseat-driver).
 
 > [!NOTE]
 > Plugins contain agents and skills. Both types of content are lazy loaded by the agent, so they will not hurt your agents context window just by being there. They will only add some little description so that the agent knows when to load them.
@@ -31,6 +31,12 @@ Instructions can't be bundled in plugins — install them separately:
 
 Installation looks a bit different depending on platform. But your agent will know what to do. Give it the repo url and tell it what you want to have installed.
 
+In Claude Code, each plugin installs with one command, such as:
+
+```
+/plugin install clojure --marketplace BetterThanTomorrow/awesome-backseat-driver
+```
+
 ## WIP
 
 This repo will mature both in terms of its content and structure. Right now it is very raw and maybe not the easiest to contribute to (and certainly not to maintain). Please don't let that stop you from trying to contribute. 😀
@@ -39,24 +45,28 @@ This repo will mature both in terms of its content and structure. Right now it i
 
 ### Branch model
 
-Development happens on the `next` branch. Releases merge `next` into `master` (fast-forward only).
+`master` is the marketplace: Copilot, Cursor, and Claude Code install from it. Work happens on a `next` branch, and `bb publish` puts each release on `master`.
 
-### Dual-manifest workflow
+### Generated manifests
 
-Copilot manifests under `.github/plugin/` are the source of truth. Cursor manifests under `.cursor-plugin/` are **generated only** — never edit them by hand.
+The Copilot files are the source: `.github/plugin/marketplace.json`, `plugins/*/.github/plugin/plugin.json`, and the agents in `plugins/*/agents/`. The Cursor manifests (`.cursor-plugin/`), the Claude Code manifests (`.claude-plugin/`), and the Claude Code agents (`plugins/*/claude-agents/`) are generated from them. Don't edit the generated files by hand.
 
 ```sh
-# after changing .github/plugin/ manifests or plugin content
+# after changing Copilot manifests, agents, or plugin content
 bb generate-cursor-plugins
+bb generate-claude-plugins
 bb validate
-git add .github/plugin/ .cursor-plugin/
 ```
 
-`bb validate` runs Copilot checks plus Cursor validation (path resolution, frontmatter policy, and L4 drift detection against committed `.cursor-plugin/` files).
+Commit the sources and the generated files together. [AGENTS.md](AGENTS.md) says how each generator translates the Copilot files.
 
 ### Cursor
 
 Generated `.cursor-plugin/marketplace.json` and `plugins/*/.cursor-plugin/plugin.json` follow [Cursor’s plugin reference](https://cursor.com/docs/reference/plugins). Install or test from the same git repo URL as Copilot; Cursor reads the generated tree, not `.github/plugin/`.
+
+### Claude Code
+
+Generated `.claude-plugin/marketplace.json` and `plugins/*/.claude-plugin/plugin.json` make the repo a Claude Code marketplace. With the Claude Code CLI installed, `claude plugin validate .` checks them.
 
 ### Validating plugins
 
@@ -64,7 +74,7 @@ Generated `.cursor-plugin/marketplace.json` and `plugins/*/.cursor-plugin/plugin
 bb validate
 ```
 
-Checks Copilot and Cursor plugin structure: required fields, referenced paths, frontmatter identifiers, and regeneration fidelity.
+Checks Copilot, Cursor, and Claude Code plugin structure: required fields, referenced paths, frontmatter identifiers, and that the generated files match what the generators produce. CI runs it, with `bb test`, on pull requests and pushes to `master`.
 
 ### Publishing a release
 
@@ -72,7 +82,7 @@ Checks Copilot and Cursor plugin structure: required fields, referenced paths, f
 bb publish
 ```
 
-This runs `bb validate` first, then validates preconditions (on `next`, clean tree, ahead of `master`, changelog has unreleased entries), shows a summary, and on confirmation pushes a `[publish]` marker commit. CI validates again, runs `ci-release` (which regenerates both manifest trees), validates once more, commits Copilot and `.cursor-plugin/` artifacts, tags, creates a GitHub Release, and merges `next` into `master`.
+This runs `bb validate`, then checks that you are on `next` with a clean tree, that `master` is in the branch's history, and that the changelog has Unreleased entries. It shows a summary and asks before going on. Then it moves the Unreleased entries to a versioned section, bumps the versions of plugins that changed, regenerates the manifests and READMEs, and puts the tree on `master` as one `[publish]` commit. It tags that commit, creates the GitHub release, merges the release back into `next`, and bumps `next` to the following version. `bb publish --dry-run` shows the summary and stops.
 
 ## License 🍻🗽
 

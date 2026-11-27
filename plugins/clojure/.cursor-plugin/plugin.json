@@ -10,5 +10,5 @@
   "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
   "rules" : "./rules/",
   "skills" : "./skills/",
-  "version" : "0.1.6"
+  "version" : "0.1.7"
 }

@@ -373,6 +373,7 @@
   (ci-release! version)
   (generate-marketplace-plugins!)
   ((requiring-resolve 'cursor-plugin/generate-cursor-plugins!))
+  ((requiring-resolve 'claude-plugin/generate-claude-plugins!))
   (update-readme!))
 
 (defn publish-release!
@@ -395,6 +396,7 @@
     (p/shell "git" "merge" sha "-m" (str "Merge public release v" version))
     (bump-version! next-version)
     ((requiring-resolve 'cursor-plugin/generate-cursor-plugins!))
+    ((requiring-resolve 'claude-plugin/generate-claude-plugins!))
     (git-commit-all! (str "Bump version to v" next-version))
     (p/shell "git" "push" "origin" "next")
     (println (str "Published v" version " to public master. Private next is v" next-version "."))

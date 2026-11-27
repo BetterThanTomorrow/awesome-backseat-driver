@@ -4,6 +4,10 @@ Changes to Awesome Backseat Driver
 
 ## [Unreleased]
 
+## [1.0.19] - 2026-11-27
+
+- Add Claude Code plugin manifests, with Claude Code versions of the clojure-editor and non-clojure-editor agents
+
 ## [1.0.18] - 2026-09-25
 
 - REPL verify -> epupp skill fixes

@@ -2,7 +2,13 @@
 
 Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects.
 
-Version: 0.1.2
+Version: 0.1.3
+
+## Install in Claude Code
+
+```
+/plugin install squint --marketplace BetterThanTomorrow/awesome-backseat-driver
+```
 
 ## Skills
 

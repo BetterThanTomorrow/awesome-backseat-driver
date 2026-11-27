@@ -1,0 +1,11 @@
+{
+  "author" : {
+    "name" : "BetterThanTomorrow"
+  },
+  "description" : "Babashka scripting and bb.edn task skills for idiomatic Babashka development.",
+  "keywords" : [ "clojure", "repl", "interactive-programming", "calva", "backseat-driver" ],
+  "license" : "MIT",
+  "name" : "babashka",
+  "repository" : "https://github.com/BetterThanTomorrow/awesome-backseat-driver",
+  "version" : "0.1.4"
+}

@@ -28,6 +28,8 @@ Never edit Clojure forms with plain string/file-edit tools — non-structural ed
 
 Feed stdin-reading functions with `with-in-str` or arguments — the connected REPL has no usable process stdin. Details: `references/runtime-patterns.md`.
 
+Give `:reload` and `:reload-all` a `require` of their own, naming only the namespaces you mean to reload. The flag applies to every library in the form, so `(require '[some.lib :as lib] 'my.ns :reload)` reloads `some.lib` too. A reloaded library defines its records and types as new classes, and data built before the reload still holds the old ones: `instance?`, protocol dispatch and the library's own predicates stop recognizing it, while the running code carries on. Integrant refs in a prepared config are a typical case — the running system is fine, and building anything new from that config gives unresolved refs. When it has happened, rebuild that data with the reloaded library (read the config again).
+
 ## S3 — Coding Conventions
 
 ### Requiring and Aliasing

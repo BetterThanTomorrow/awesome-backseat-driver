@@ -1,0 +1,31 @@
+{
+  "metadata" : {
+    "description" : "Clojure AI context plugins for GitHub Copilot, Cursor, and Claude Code — agents, skills, and workflows for REPL-first interactive programming with Calva Backseat Driver.",
+    "version" : "1.0.19"
+  },
+  "name" : "awesome-backseat-driver",
+  "owner" : {
+    "name" : "BetterThanTomorrow"
+  },
+  "plugins" : [ {
+    "description" : "Babashka scripting and bb.edn task skills for idiomatic Babashka development.",
+    "name" : "babashka",
+    "source" : "./plugins/babashka"
+  }, {
+    "description" : "REPL-first Clojure development — general agent and skill for any dialect and runtime; pairs with clojure-editor for safe edit delegation.",
+    "name" : "clojure",
+    "source" : "./plugins/clojure"
+  }, {
+    "description" : "Subagent for editing Clojure files using Backseat Driver structural editing tools.",
+    "name" : "clojure-editor",
+    "source" : "./plugins/clojure-editor"
+  }, {
+    "description" : "Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser).",
+    "name" : "epupp",
+    "source" : "./plugins/epupp"
+  }, {
+    "description" : "Squint ClojureScript development — compilation, REPL workflow, debugging, and tooling for squint.edn projects.",
+    "name" : "squint",
+    "source" : "./plugins/squint"
+  } ]
+}

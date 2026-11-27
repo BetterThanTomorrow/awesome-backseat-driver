@@ -2,7 +2,13 @@
 
 Browser tampering and userscript development with Epupp (ClojureScript/Scittle in the browser).
 
-Version: 0.1.5
+Version: 0.1.6
+
+## Install in Claude Code
+
+```
+/plugin install epupp --marketplace BetterThanTomorrow/awesome-backseat-driver
+```
 
 ## Skills
 

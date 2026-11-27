@@ -130,7 +130,13 @@
                ""
                (:description pj)
                ""
-               (str "Version: " (:version pj))]]
+               (str "Version: " (:version pj))
+               ""
+               "## Install in Claude Code"
+               ""
+               "```"
+               (str "/plugin install " (:name pj) " --marketplace " publish/public-repo)
+               "```"]]
     (str
      (string/join "\n" lines)
      (when (seq skills)
